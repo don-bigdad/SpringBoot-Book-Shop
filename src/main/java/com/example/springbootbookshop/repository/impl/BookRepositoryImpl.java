@@ -1,6 +1,7 @@
 package com.example.springbootbookshop.repository.impl;
 
 import com.example.springbootbookshop.entity.Book;
+import com.example.springbootbookshop.exception.DataProcessingException;
 import com.example.springbootbookshop.repository.BookRepository;
 import java.util.List;
 import org.hibernate.Session;
@@ -32,7 +33,7 @@ public class BookRepositoryImpl implements BookRepository {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can`t save book in DB:" + book, e);
+            throw new DataProcessingException("Can`t save book in DB:" + book, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -46,7 +47,7 @@ public class BookRepositoryImpl implements BookRepository {
             return session.createQuery("from Book",Book.class)
                     .getResultList();
         } catch (Exception e) {
-            throw new RuntimeException("Can`t get all books from DB", e);
+            throw new DataProcessingException("Can`t get all books from DB", e);
         }
     }
 }
