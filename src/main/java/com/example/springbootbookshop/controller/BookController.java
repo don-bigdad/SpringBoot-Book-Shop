@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/books")
+@RequestMapping(value = "/books")
 public class BookController {
     private final BookService bookService;
 
@@ -24,7 +24,7 @@ public class BookController {
         return bookService.findAll();
     }
 
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "/{id}")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.getBookById(id);
     }
