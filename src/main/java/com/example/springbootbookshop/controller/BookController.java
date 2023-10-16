@@ -6,6 +6,7 @@ import com.example.springbootbookshop.entity.Book;
 import com.example.springbootbookshop.service.BookService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,11 @@ public class BookController {
     @GetMapping
     public List<BookDto> getAll() {
         return bookService.findAll();
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void deleteBookById(@PathVariable Long id) {
+        bookService.deleteById(id);
     }
 
     @GetMapping(value = "/{id}")
