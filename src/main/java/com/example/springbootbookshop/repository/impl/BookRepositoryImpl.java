@@ -2,8 +2,10 @@ package com.example.springbootbookshop.repository.impl;
 
 import com.example.springbootbookshop.entity.Book;
 import com.example.springbootbookshop.exception.DataProcessingException;
+import com.example.springbootbookshop.exception.EntityNotFoundException;
 import com.example.springbootbookshop.repository.BookRepository;
 import java.util.List;
+import java.util.Optional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -48,6 +50,17 @@ public class BookRepositoryImpl implements BookRepository {
                     .getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can`t get all books from DB", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try {
+            return Optional.ofNullable(sessionFactory
+                    .fromSession(s -> s.find(Book.class, id)));
+        } catch (Exception e) {
+            throw new EntityNotFoundException("Can`t get Book from DB with id: "
+                    + id, e);
         }
     }
 }
