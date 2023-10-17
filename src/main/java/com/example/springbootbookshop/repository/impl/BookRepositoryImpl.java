@@ -2,6 +2,7 @@ package com.example.springbootbookshop.repository.impl;
 
 import com.example.springbootbookshop.entity.Book;
 import com.example.springbootbookshop.exception.DataProcessingException;
+import com.example.springbootbookshop.exception.EntityNotFoundException;
 import com.example.springbootbookshop.repository.BookRepository;
 import java.util.List;
 import java.util.Optional;
@@ -54,12 +55,11 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Optional<Book> findById(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            return Optional.ofNullable(session.createQuery("from Book where id = :id", Book.class)
-                    .setParameter("id",id)
-                    .uniqueResult());
+        try {
+            return Optional.ofNullable(sessionFactory
+                    .fromSession(s -> s.find(Book.class, id)));
         } catch (Exception e) {
-            throw new DataProcessingException("Can`t get Book from DB with id: "
+            throw new EntityNotFoundException("Can`t get Book from DB with id: "
                     + id, e);
         }
     }

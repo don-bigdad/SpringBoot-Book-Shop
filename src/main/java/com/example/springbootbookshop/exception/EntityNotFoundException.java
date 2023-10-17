@@ -1,11 +1,11 @@
 package com.example.springbootbookshop.exception;
 
-public class EntityNotFoundException extends Exception {
-    public EntityNotFoundException(String message,Throwable cause) {
-        super(message,cause);
-    }
-
+public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException(String message) {
         super(message);
+    }
+
+    public EntityNotFoundException(String message,Throwable cause) {
+        super(message,cause);
     }
 }
