@@ -8,6 +8,7 @@ import com.example.springbootbookshop.repository.BookRepository;
 import com.example.springbootbookshop.service.BookService;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -44,9 +45,14 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto update(CreateBookRequestDto bookRequestDto, Long id) {
-        Book book = bookMapper.toBook(bookRequestDto);
-        book.setId(id);
-        bookRepository.save(book);
-        return bookMapper.toDto(book);
+        Optional<Book> bookOptional = bookRepository.findById(id);
+        if (bookOptional.isPresent()) {
+            Book book = bookMapper.toBook(bookRequestDto);
+            book.setId(id);
+            bookRepository.save(book);
+            return bookMapper.toDto(book);
+        } else {
+            throw new EntityNotFoundException("Book with ID " + id + " not found");
+        }
     }
 }
