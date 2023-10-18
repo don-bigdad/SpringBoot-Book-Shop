@@ -1,11 +1,13 @@
 package com.example.springbootbookshop.dto;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
-public record CreateBookRequestDto(@NotNull String title, @NotNull String author,
-                                   @NotNull String isbn,
-                                   @NotNull @Min(0) BigDecimal price,
-                                   String description, String coverImage) {
+public record CreateBookRequestDto(@NotBlank String title,
+                                   @NotBlank String author,
+                                   @NotBlank String isbn,
+                                   @NotBlank @Min(0) BigDecimal price,
+                                   String description,
+                                   String coverImage) {
 }
