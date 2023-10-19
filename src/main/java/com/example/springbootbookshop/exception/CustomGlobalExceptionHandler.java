@@ -36,6 +36,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         System.out.println(ex.getMessage());
         return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
     }
+
     private String getErrorMessage(ObjectError e) {
         if (e instanceof FieldError) {
             String field = ((FieldError) e).getField();

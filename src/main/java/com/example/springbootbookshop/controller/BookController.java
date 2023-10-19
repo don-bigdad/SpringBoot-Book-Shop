@@ -41,7 +41,7 @@ public class BookController {
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto getBookById(@PathVariable @Positive  Long id) {
+    public BookDto getBookById(@PathVariable @Positive Long id) {
         return bookService.getBookById(id);
     }
 
