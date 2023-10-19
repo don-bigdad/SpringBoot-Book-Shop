@@ -13,6 +13,7 @@ import org.mapstruct.NullValueCheckStrategy;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface BookMapper {
     BookDto toDto(Book book);
+
     Book toBook(CreateBookRequestDto bookDto);
 
     void updateBook(CreateBookRequestDto dto, @MappingTarget Book book);
