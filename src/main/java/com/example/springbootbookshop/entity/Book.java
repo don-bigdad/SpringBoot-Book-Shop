@@ -8,8 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
+@SQLDelete(sql = "UPDATE books SET is_deleted = TRUE WHERE id = ?")
+@Where(clause = "is_deleted = false")
 @Data
 @Table(name = "books")
 public class Book {
@@ -26,4 +30,7 @@ public class Book {
     private BigDecimal price;
     private String description;
     private String coverImage;
+
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 }
