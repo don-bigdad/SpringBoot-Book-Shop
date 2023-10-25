@@ -1,8 +1,8 @@
 package com.example.springbootbookshop.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
-public record UserLoginRequestDto(@NotBlank String email,
-                                  @NotBlank @Size(min = 4) String password) {
+public record UserLoginRequestDto(@NotNull @Email String email,
+                                  @NotNull String password) {
 }

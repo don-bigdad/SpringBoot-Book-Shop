@@ -30,8 +30,9 @@ public class AuthenticationController {
         return userService.register(requestDto);
     }
 
-    @PostMapping(value = "/login1")
+    @PostMapping(value = "/login")
     public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto requestDto) {
+        System.out.println(requestDto.email());
         return authenticationService.authenticate(requestDto);
     }
 }
