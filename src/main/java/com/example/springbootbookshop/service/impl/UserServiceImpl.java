@@ -1,6 +1,6 @@
 package com.example.springbootbookshop.service.impl;
 
-import com.example.springbootbookshop.dto.UserRegisterResponseDto;
+import com.example.springbootbookshop.dto.UserDto;
 import com.example.springbootbookshop.dto.UserRegistrationRequestDto;
 import com.example.springbootbookshop.entity.Role;
 import com.example.springbootbookshop.entity.RoleName;
@@ -26,22 +26,17 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserRegisterResponseDto register(UserRegistrationRequestDto requestDto)
+    public UserDto register(UserRegistrationRequestDto requestDto)
             throws RegistrationException {
         if (userRepository.findByEmail(requestDto.email()).isPresent()) {
             throw new RegistrationException("User with email: " + requestDto.email()
             + " already exist");
         }
-        User user = new User();
-        user.setEmail(requestDto.email());
+        User user = userMapper.toUserModel(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.password()));
-        user.setFirstName(requestDto.firstName());
-        user.setLastName(requestDto.lastName());
-        user.setShippingAddress(requestDto.shippingAddress());
 
         user.setRoles(getUserRole());
-        User savedUser = userRepository.save(user);
-        return userMapper.toResponseDto(savedUser);
+        return userMapper.toDto(userRepository.save(user));
     }
 
     private Set<Role> getUserRole() {

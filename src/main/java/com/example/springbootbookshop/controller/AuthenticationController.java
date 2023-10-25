@@ -1,8 +1,8 @@
 package com.example.springbootbookshop.controller;
 
+import com.example.springbootbookshop.dto.UserDto;
 import com.example.springbootbookshop.dto.UserLoginRequestDto;
 import com.example.springbootbookshop.dto.UserLoginResponseDto;
-import com.example.springbootbookshop.dto.UserRegisterResponseDto;
 import com.example.springbootbookshop.dto.UserRegistrationRequestDto;
 import com.example.springbootbookshop.exception.RegistrationException;
 import com.example.springbootbookshop.security.AuthenticationService;
@@ -24,13 +24,13 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/register")
-    public UserRegisterResponseDto register(@RequestBody @Valid
-                                                UserRegistrationRequestDto requestDto)
+    public UserDto register(@RequestBody @Valid
+                                UserRegistrationRequestDto requestDto)
             throws RegistrationException {
         return userService.register(requestDto);
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/login1")
     public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto requestDto) {
         return authenticationService.authenticate(requestDto);
     }

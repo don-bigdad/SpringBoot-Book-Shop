@@ -1,8 +1,7 @@
 package com.example.springbootbookshop.mapper;
 
 import com.example.springbootbookshop.dto.UserDto;
-import com.example.springbootbookshop.dto.UserLoginResponseDto;
-import com.example.springbootbookshop.dto.UserRegisterResponseDto;
+import com.example.springbootbookshop.dto.UserRegistrationRequestDto;
 import com.example.springbootbookshop.entity.User;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -15,9 +14,5 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface UserMapper {
     UserDto toDto(User user);
 
-    User toUserModel(UserDto userDto);
-
-    UserRegisterResponseDto toResponseDto(User user);
-
-    UserLoginResponseDto toLoginResponseDto(User user);
+    User toUserModel(UserRegistrationRequestDto userDto);
 }
