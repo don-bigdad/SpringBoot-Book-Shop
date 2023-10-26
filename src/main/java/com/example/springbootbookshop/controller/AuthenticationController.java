@@ -33,6 +33,6 @@ public class AuthenticationController {
     @PostMapping(value = "/login")
     public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto requestDto) {
         System.out.println(requestDto.email());
-        return authenticationService.authenticate(requestDto);
+        return authenticationService.authenticateUser(requestDto);
     }
 }

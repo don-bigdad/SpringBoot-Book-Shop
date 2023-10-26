@@ -1,38 +1,25 @@
 databaseChangeLog:
   - changeSet:
-      id: create-roles-users-junction-table
-      author: your-author-name
+      id: create-users-roles-table
+      author: bohdan-maksymenko
       changes:
         - createTable:
             tableName: users_roles
             columns:
               - column:
-                  name: user_role_id
-                  type: BIGINT
-                  autoIncrement: true
                   constraints:
-                    primaryKey: true
-              - column:
-                  name: role_id
-                  type: BIGINT
-                  constraints:
-                    foreignKeyName: FK_role_id
-              - column:
+                    nullable: false
                   name: user_id
                   type: BIGINT
+              - column:
                   constraints:
-                    foreignKeyName: FK_user_id
-
-        - addForeignKeyConstraint:
-            baseTableName: users_roles
-            baseColumnNames: user_id
-            referencedTableName: roles
-            referencedColumnNames: id
-            constraintName: FK_role_id
-
-        - addForeignKeyConstraint:
-            baseTableName: users_roles
-            baseColumnNames: user_id
-            referencedTableName: users
-            referencedColumnNames: id
-            constraintName: FK_user_id
+                    nullable: false
+                  name: role_id
+                  type: BIGINT
+  - changeSet:
+      id: add-foreign-keys-from-user-and-roles
+      author: bohdan-maksymenko
+      changes:
+        - addPrimaryKey:
+            columnNames: user_id, role_id
+            tableName: users_roles

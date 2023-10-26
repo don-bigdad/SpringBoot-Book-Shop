@@ -8,32 +8,21 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: BIGINT
+                  type: bigint
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: name
-                  type: VARCHAR(255)
+                  type: varchar(32)
                   constraints:
-                    unique: true
                     nullable: false
-        - insert:
-            tableName: roles
-            columns:
-              - column:
-                  name: name
-                  value: USER
-        - insert:
-            tableName: roles
-            columns:
-              - column:
-                  name: name
-                  value: ADMIN
-        - insert:
-            tableName: roles
-            columns:
-              - column:
-                  name: name
-                  value: MANAGER
+                    unique: true
+
+  - changeSet:
+      id: insert-roles
+      author: bohdan-maksymenko
+      changes:
+        - sql:
+            sql: INSERT INTO roles (id, name) VALUES (1, 'USER'), (2, 'ADMIN'), (3, 'MANAGER');
