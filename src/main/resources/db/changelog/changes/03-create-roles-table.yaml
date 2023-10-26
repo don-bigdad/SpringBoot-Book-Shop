@@ -15,7 +15,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: name
-                  type: varchar(32)
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
                     unique: true
