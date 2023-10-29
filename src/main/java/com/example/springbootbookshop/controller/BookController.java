@@ -35,6 +35,7 @@ public class BookController {
 
     @GetMapping
     @Operation(summary = "Get all books from DB")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getAll(@PageableDefault(size = 5, page = 0)
                                     Pageable pageable) {
@@ -51,6 +52,7 @@ public class BookController {
 
     @GetMapping(value = "/{id}")
     @Operation(summary = "Get book by Id from DB")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @ResponseStatus(HttpStatus.OK)
     public BookDto getBookById(@PathVariable @Positive Long id) {
         return bookService.getBookById(id);

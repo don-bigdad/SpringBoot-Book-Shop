@@ -14,4 +14,6 @@ public @interface FieldMatch {
     String message() default "Passwords do not match";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
+
+    String[] fields();
 }

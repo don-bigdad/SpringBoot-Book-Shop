@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-@FieldMatch
+@FieldMatch(fields = {"password", "repeatPassword"})
 public record UserRegistrationRequestDto(@NotBlank @Email String email,
                                          @NotBlank @Size(min = 4) String password,
                                          @NotBlank @Size(min = 4) String repeatPassword,
