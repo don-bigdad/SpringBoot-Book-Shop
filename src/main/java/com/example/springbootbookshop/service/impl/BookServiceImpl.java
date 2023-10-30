@@ -1,8 +1,9 @@
 package com.example.springbootbookshop.service.impl;
 
-import com.example.springbootbookshop.dto.BookDto;
-import com.example.springbootbookshop.dto.CreateBookRequestDto;
+import com.example.springbootbookshop.dto.book.BookDto;
+import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
 import com.example.springbootbookshop.entity.Book;
+import com.example.springbootbookshop.entity.Category;
 import com.example.springbootbookshop.exception.EntityNotFoundException;
 import com.example.springbootbookshop.mapper.BookMapper;
 import com.example.springbootbookshop.repository.BookRepository;
@@ -50,5 +51,9 @@ public class BookServiceImpl implements BookService {
         bookMapper.updateBook(bookRequestDto, bookToUpdate);
         bookRepository.save(bookToUpdate);
         return bookMapper.toDto(bookToUpdate);
+    }
+
+    public List<BookDto> getBookByCategory(Category category) {
+        return bookRepository.getBookByCategory(category);
     }
 }

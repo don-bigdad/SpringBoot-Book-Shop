@@ -1,7 +1,7 @@
 package com.example.springbootbookshop.controller;
 
-import com.example.springbootbookshop.dto.BookDto;
-import com.example.springbootbookshop.dto.CreateBookRequestDto;
+import com.example.springbootbookshop.dto.book.BookDto;
+import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
 import com.example.springbootbookshop.entity.Book;
 import com.example.springbootbookshop.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
