@@ -48,7 +48,6 @@ public class CategoryController {
         return categoryService.findAll();
     }
 
-
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get category by id from DB")
@@ -65,6 +64,7 @@ public class CategoryController {
                                       @RequestBody @Valid CategoryDto categoryDto) {
         return categoryService.update(id,categoryDto);
     }
+
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
