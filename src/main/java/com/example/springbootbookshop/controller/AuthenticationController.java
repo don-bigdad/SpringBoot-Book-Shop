@@ -7,6 +7,7 @@ import com.example.springbootbookshop.dto.UserRegistrationRequestDto;
 import com.example.springbootbookshop.exception.RegistrationException;
 import com.example.springbootbookshop.security.AuthenticationService;
 import com.example.springbootbookshop.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/register")
+    @Operation(summary = "Login user into system")
     public UserDto register(@RequestBody @Valid
                                 UserRegistrationRequestDto requestDto)
             throws RegistrationException {
@@ -33,6 +35,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/login")
+    @Operation(summary = "Register new user to DB")
     public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto requestDto) {
         return authenticationService.authenticateUser(requestDto);
     }
