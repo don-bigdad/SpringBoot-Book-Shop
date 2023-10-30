@@ -51,4 +51,8 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(bookToUpdate);
         return bookMapper.toDto(bookToUpdate);
     }
+
+    public List<Book> getBooksByCategoryName(Long id) {
+        return bookRepository.findAllByCategoryId(id);
+    }
 }
