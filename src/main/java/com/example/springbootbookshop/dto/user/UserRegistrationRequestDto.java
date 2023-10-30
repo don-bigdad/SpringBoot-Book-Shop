@@ -1,4 +1,4 @@
-package com.example.springbootbookshop.dto;
+package com.example.springbootbookshop.dto.user;
 
 import com.example.springbootbookshop.annotation.FieldMatch;
 import jakarta.validation.constraints.Email;

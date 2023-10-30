@@ -1,4 +1,4 @@
-package com.example.springbootbookshop.dto;
+package com.example.springbootbookshop.dto.user;
 
 public record UserRegisterResponseDto(Long id,
                                       String email,

@@ -1,7 +1,7 @@
 package com.example.springbootbookshop.service.impl;
 
-import com.example.springbootbookshop.dto.UserDto;
-import com.example.springbootbookshop.dto.UserRegistrationRequestDto;
+import com.example.springbootbookshop.dto.user.UserDto;
+import com.example.springbootbookshop.dto.user.UserRegistrationRequestDto;
 import com.example.springbootbookshop.entity.Role;
 import com.example.springbootbookshop.entity.RoleName;
 import com.example.springbootbookshop.entity.User;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto register(UserRegistrationRequestDto requestDto)
             throws RegistrationException {
-        if (userRepository.findByEmail(requestDto.email()).isPresent()) {
+        if (userRepository.existsUserByEmail(requestDto.email())) {
             throw new RegistrationException("User with email: " + requestDto.email()
             + " already exist");
         }

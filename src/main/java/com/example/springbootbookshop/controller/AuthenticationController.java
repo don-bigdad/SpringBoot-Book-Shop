@@ -1,9 +1,9 @@
 package com.example.springbootbookshop.controller;
 
-import com.example.springbootbookshop.dto.UserDto;
-import com.example.springbootbookshop.dto.UserLoginRequestDto;
-import com.example.springbootbookshop.dto.UserLoginResponseDto;
-import com.example.springbootbookshop.dto.UserRegistrationRequestDto;
+import com.example.springbootbookshop.dto.user.UserDto;
+import com.example.springbootbookshop.dto.user.UserLoginRequestDto;
+import com.example.springbootbookshop.dto.user.UserLoginResponseDto;
+import com.example.springbootbookshop.dto.user.UserRegistrationRequestDto;
 import com.example.springbootbookshop.exception.RegistrationException;
 import com.example.springbootbookshop.security.AuthenticationService;
 import com.example.springbootbookshop.service.UserService;
