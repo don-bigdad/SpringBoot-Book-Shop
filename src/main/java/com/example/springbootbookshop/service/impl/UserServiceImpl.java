@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
             throw new RegistrationException("User with email: " + requestDto.email()
             + " already exist");
         }
-        User user = userMapper.toUserModel(requestDto);
+        User user = userMapper.toUser(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.password()));
         user.setRoles(getUserRole());
         return userMapper.toUserDto(userRepository.save(user));

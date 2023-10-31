@@ -14,5 +14,5 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface UserMapper {
     UserResponseDto toUserDto(User user);
 
-    User toUserModel(UserRegistrationRequestDto userDto);
+    User toUser(UserRegistrationRequestDto userDto);
 }
