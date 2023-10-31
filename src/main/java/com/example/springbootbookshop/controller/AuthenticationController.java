@@ -1,9 +1,9 @@
 package com.example.springbootbookshop.controller;
 
-import com.example.springbootbookshop.dto.user.UserDto;
 import com.example.springbootbookshop.dto.user.UserLoginRequestDto;
 import com.example.springbootbookshop.dto.user.UserLoginResponseDto;
 import com.example.springbootbookshop.dto.user.UserRegistrationRequestDto;
+import com.example.springbootbookshop.dto.user.UserResponseDto;
 import com.example.springbootbookshop.exception.RegistrationException;
 import com.example.springbootbookshop.security.AuthenticationService;
 import com.example.springbootbookshop.service.UserService;
@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@Validated
 @Tag(name = "Registration/Login",description = "Endpoints for registration or login")
 @RequestMapping(value = "/auth")
 public class AuthenticationController {
@@ -28,7 +26,7 @@ public class AuthenticationController {
 
     @PostMapping(value = "/register")
     @Operation(summary = "Login user into system")
-    public UserDto register(@RequestBody @Valid
+    public UserResponseDto register(@RequestBody @Valid
                                 UserRegistrationRequestDto requestDto)
             throws RegistrationException {
         return userService.register(requestDto);

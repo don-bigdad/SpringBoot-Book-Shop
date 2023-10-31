@@ -1,13 +1,13 @@
 package com.example.springbootbookshop.security;
 
-import com.example.springbootbookshop.exception.EntityNotFoundException;
 import com.example.springbootbookshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -15,6 +15,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         return userRepository.findByEmail(username).orElseThrow(() ->
-                new EntityNotFoundException("User doesn`t exist"));
+                new UsernameNotFoundException("User doesn`t exist"));
     }
 }
