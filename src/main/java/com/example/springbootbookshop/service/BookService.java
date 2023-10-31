@@ -18,5 +18,5 @@ public interface BookService {
 
     BookDto update(CreateBookRequestDto bookRequestDto, Long id);
 
-    List<BookDtoWithoutCategoryIds> getBooksByCategoryName(Long id);
+    List<BookDtoWithoutCategoryIds> getBooksByCategoryId(Long id);
 }

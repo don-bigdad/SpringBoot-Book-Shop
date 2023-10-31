@@ -7,6 +7,7 @@ import com.example.springbootbookshop.entity.Book;
 import com.example.springbootbookshop.exception.EntityNotFoundException;
 import com.example.springbootbookshop.mapper.BookMapper;
 import com.example.springbootbookshop.repository.BookRepository;
+import com.example.springbootbookshop.repository.CategoryRepository;
 import com.example.springbootbookshop.service.BookService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Component;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final CategoryRepository categoryRepository;
+
 
     @Override
     public Book save(CreateBookRequestDto book) {
@@ -53,9 +56,14 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toDto(bookToUpdate);
     }
 
-    public List<BookDtoWithoutCategoryIds> getBooksByCategoryName(Long id) {
-        return bookRepository.findAllByCategoryId(id).stream()
-                .map(bookMapper::toDtoWithoutCategories)
-                .toList();
+    @Override
+    public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(Long id) {
+        if (categoryRepository.existsById(id)) {
+            return bookRepository.findAllByCategoryId(id).stream()
+                    .map(bookMapper::toDtoWithoutCategories)
+                    .toList();
+        }
+        throw new EntityNotFoundException("Category with id " + id +
+                " doesn`t exist");
     }
 }
