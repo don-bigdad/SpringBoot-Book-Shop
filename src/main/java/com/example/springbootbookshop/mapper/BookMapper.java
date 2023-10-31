@@ -1,7 +1,7 @@
 package com.example.springbootbookshop.mapper;
 
-import com.example.springbootbookshop.dto.BookDto;
-import com.example.springbootbookshop.dto.CreateBookRequestDto;
+import com.example.springbootbookshop.dto.book.BookDto;
+import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
 import com.example.springbootbookshop.entity.Book;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;

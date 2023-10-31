@@ -1,4 +1,4 @@
-package com.example.springbootbookshop.dto;
+package com.example.springbootbookshop.dto.book;
 
 import java.math.BigDecimal;
 
