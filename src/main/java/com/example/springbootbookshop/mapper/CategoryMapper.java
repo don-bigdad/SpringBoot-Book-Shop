@@ -1,6 +1,7 @@
 package com.example.springbootbookshop.mapper;
 
 import com.example.springbootbookshop.dto.category.CategoryDto;
+import com.example.springbootbookshop.dto.category.CategoryRequestDto;
 import com.example.springbootbookshop.entity.Category;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
@@ -19,5 +20,5 @@ public interface CategoryMapper {
     Category toEntity(CategoryDto categoryDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateCategory(CategoryDto dto, @MappingTarget Category category);
+    void updateCategory(CategoryRequestDto dto, @MappingTarget Category category);
 }

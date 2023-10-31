@@ -5,7 +5,6 @@ import com.example.springbootbookshop.dto.user.UserResponseDto;
 import com.example.springbootbookshop.entity.Role;
 import com.example.springbootbookshop.entity.RoleName;
 import com.example.springbootbookshop.entity.User;
-import com.example.springbootbookshop.exception.RegistrationException;
 import com.example.springbootbookshop.mapper.UserMapper;
 import com.example.springbootbookshop.repository.RoleRepository;
 import com.example.springbootbookshop.repository.UserRepository;
@@ -14,8 +13,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +27,10 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserResponseDto register(UserRegistrationRequestDto requestDto)
-            throws RegistrationException {
+    public UserResponseDto register(UserRegistrationRequestDto requestDto) {
         if (userRepository.existsUserByEmail(requestDto.email())) {
-            throw new RegistrationException("User with email: " + requestDto.email()
-            + " already exist");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "User with email: " + requestDto.email() + " already exists");
         }
         User user = userMapper.toUserModel(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.password()));

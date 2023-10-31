@@ -1,6 +1,7 @@
 package com.example.springbootbookshop.service.impl;
 
 import com.example.springbootbookshop.dto.book.BookDto;
+import com.example.springbootbookshop.dto.book.BookDtoWithoutCategoryIds;
 import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
 import com.example.springbootbookshop.entity.Book;
 import com.example.springbootbookshop.exception.EntityNotFoundException;
@@ -52,7 +53,9 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toDto(bookToUpdate);
     }
 
-    public List<Book> getBooksByCategoryName(Long id) {
-        return bookRepository.findAllByCategoryId(id);
+    public List<BookDtoWithoutCategoryIds> getBooksByCategoryName(Long id) {
+        return bookRepository.findAllByCategoryId(id).stream()
+                .map(bookMapper::toDtoWithoutCategories)
+                .toList();
     }
 }

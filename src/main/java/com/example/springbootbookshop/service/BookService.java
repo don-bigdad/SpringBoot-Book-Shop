@@ -1,6 +1,7 @@
 package com.example.springbootbookshop.service;
 
 import com.example.springbootbookshop.dto.book.BookDto;
+import com.example.springbootbookshop.dto.book.BookDtoWithoutCategoryIds;
 import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
 import com.example.springbootbookshop.entity.Book;
 import java.util.List;
@@ -17,5 +18,5 @@ public interface BookService {
 
     BookDto update(CreateBookRequestDto bookRequestDto, Long id);
 
-    List<Book> getBooksByCategoryName(Long id);
+    List<BookDtoWithoutCategoryIds> getBooksByCategoryName(Long id);
 }

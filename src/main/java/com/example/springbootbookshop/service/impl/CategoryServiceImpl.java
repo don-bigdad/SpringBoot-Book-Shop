@@ -1,6 +1,7 @@
 package com.example.springbootbookshop.service.impl;
 
 import com.example.springbootbookshop.dto.category.CategoryDto;
+import com.example.springbootbookshop.dto.category.CategoryRequestDto;
 import com.example.springbootbookshop.entity.Category;
 import com.example.springbootbookshop.exception.EntityNotFoundException;
 import com.example.springbootbookshop.mapper.CategoryMapper;
@@ -25,27 +26,25 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto getById(Long id) {
-        return categoryMapper.toDto(categoryRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Category with id "
-                        + id + "doesn`t exist")
-        ));
+        return categoryRepository.findById(id)
+                .map(categoryMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Can`t find"
+                        + "category with id:" + id));
     }
 
     @Override
-    public CategoryDto save(CategoryDto categoryDto) {
-        Category category = categoryMapper.toEntity(categoryDto);
-        categoryRepository.save(category);
-        return categoryDto;
+    public Category save(CategoryDto categoryDto) {
+        return categoryRepository.save(categoryMapper.toEntity(categoryDto));
     }
 
     @Override
-    public CategoryDto update(Long id, CategoryDto categoryDto) {
+    public CategoryDto update(Long id, CategoryRequestDto categoryRequestDtoDto) {
         Category categoryToUpdate = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can`t find category with id:" + id));
-        categoryMapper.updateCategory(categoryDto,categoryToUpdate);
+        categoryMapper.updateCategory(categoryRequestDtoDto,categoryToUpdate);
         categoryRepository.save(categoryToUpdate);
-        return categoryDto;
+        return categoryMapper.toDto(categoryToUpdate);
     }
 
     @Override

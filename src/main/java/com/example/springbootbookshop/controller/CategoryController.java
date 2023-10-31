@@ -1,7 +1,9 @@
 package com.example.springbootbookshop.controller;
 
+import com.example.springbootbookshop.dto.book.BookDtoWithoutCategoryIds;
 import com.example.springbootbookshop.dto.category.CategoryDto;
-import com.example.springbootbookshop.entity.Book;
+import com.example.springbootbookshop.dto.category.CategoryRequestDto;
+import com.example.springbootbookshop.entity.Category;
 import com.example.springbootbookshop.service.BookService;
 import com.example.springbootbookshop.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +38,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Create new category (for admin only)")
-    public CategoryDto createCategory(@RequestBody @Valid CategoryDto categoryDto) {
+    public Category createCategory(@RequestBody @Valid CategoryDto categoryDto) {
         return categoryService.save(categoryDto);
     }
 
@@ -61,23 +63,23 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Update category by id (for Admin only)")
     public CategoryDto updateCategory(@PathVariable @Positive Long id,
-                                      @RequestBody @Valid CategoryDto categoryDto) {
-        return categoryService.update(id,categoryDto);
+                                      @RequestBody @Valid CategoryRequestDto dto) {
+        return categoryService.update(id, dto);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Delete category by id (for Admin only)")
-    public void deleteCategory(Long id) {
+    public void deleteCategory(@PathVariable @Positive Long id) {
         categoryService.deleteById(id);
     }
 
     @GetMapping("/{id}/books")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Get books by category")
-    public List<Book> getBooksByCategoryId(Long id) {
+    public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(@PathVariable @Positive Long id) {
         return bookService.getBooksByCategoryName(id);
     }
 }
