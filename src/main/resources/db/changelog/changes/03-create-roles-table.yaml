@@ -25,4 +25,4 @@ databaseChangeLog:
       author: bohdan-maksymenko
       changes:
         - sql:
-            sql: INSERT INTO roles (id, name) VALUES (1, 'USER'), (2, 'ADMIN'), (3, 'MANAGER');
+            sql: INSERT INTO roles (id, name) VALUES (1, 'USER'), (2, 'ADMIN');

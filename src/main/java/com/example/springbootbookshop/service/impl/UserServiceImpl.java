@@ -15,9 +15,9 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -26,8 +26,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDto register(UserRegistrationRequestDto requestDto)
-            throws RegistrationException {
+    public UserDto register(UserRegistrationRequestDto requestDto) {
         if (userRepository.existsUserByEmail(requestDto.email())) {
             throw new RegistrationException("User with email: " + requestDto.email()
             + " already exist");
