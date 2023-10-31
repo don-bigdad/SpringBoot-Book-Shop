@@ -78,6 +78,6 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(summary = "Get books by category")
     public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(@PathVariable @Positive Long id) {
-        return bookService.getBooksByCategoryName(id);
+        return bookService.getBooksByCategoryId(id);
     }
 }

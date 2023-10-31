@@ -21,7 +21,6 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
     private final CategoryRepository categoryRepository;
 
-
     @Override
     public Book save(CreateBookRequestDto book) {
         return bookRepository.save(bookMapper.toBook(book));
@@ -63,7 +62,7 @@ public class BookServiceImpl implements BookService {
                     .map(bookMapper::toDtoWithoutCategories)
                     .toList();
         }
-        throw new EntityNotFoundException("Category with id " + id +
-                " doesn`t exist");
+        throw new EntityNotFoundException("Category with id " + id
+                + " doesn`t exist");
     }
 }
