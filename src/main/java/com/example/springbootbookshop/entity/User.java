@@ -52,6 +52,7 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
     @Column(nullable = false)
     private boolean isDeleted = false;
+
     @OneToOne(mappedBy = "user",cascade = CascadeType.REMOVE)
     private Cart cart;
 
