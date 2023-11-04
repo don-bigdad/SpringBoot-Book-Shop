@@ -3,12 +3,11 @@ package com.example.springbootbookshop.service;
 import com.example.springbootbookshop.dto.book.BookDto;
 import com.example.springbootbookshop.dto.book.BookDtoWithoutCategoryIds;
 import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
-import com.example.springbootbookshop.entity.Book;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 public interface BookService {
-    Book save(CreateBookRequestDto book);
+    BookDto save(CreateBookRequestDto book);
 
     List<BookDto> findAll(Pageable pageable);
 

@@ -1,15 +1,17 @@
 package com.example.springbootbookshop.dto.book;
 
-import com.example.springbootbookshop.entity.Category;
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
+import lombok.Data;
 
-public record BookDto(Long id,
-                      String title,
-                      String author,
-                      String isbn,
-                      BigDecimal price,
-                      String description,
-                      String coverImage,
-                      Set<Category> categories) {
+@Data
+public class BookDto {
+    private Long id;
+    private String title;
+    private String author;
+    private String isbn;
+    private BigDecimal price;
+    private String description;
+    private String coverImage;
+    private List<Long> categoryIds;
 }

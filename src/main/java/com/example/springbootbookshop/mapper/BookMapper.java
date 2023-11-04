@@ -4,6 +4,7 @@ import com.example.springbootbookshop.dto.book.BookDto;
 import com.example.springbootbookshop.dto.book.BookDtoWithoutCategoryIds;
 import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
 import com.example.springbootbookshop.entity.Book;
+import com.example.springbootbookshop.entity.Category;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
@@ -28,6 +29,8 @@ public interface BookMapper {
 
     @AfterMapping
     default void setCategoryIds(@MappingTarget BookDto bookDto, Book book) {
-        book.setCategories(bookDto.categories());
+        bookDto.setCategoryIds(book.getCategories().stream()
+                .map(Category::getId)
+                .toList());
     }
 }
