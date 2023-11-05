@@ -2,7 +2,6 @@ package com.example.springbootbookshop.controller;
 
 import com.example.springbootbookshop.dto.book.BookDto;
 import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
-import com.example.springbootbookshop.entity.Book;
 import com.example.springbootbookshop.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -70,7 +69,7 @@ public class BookController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Create new book")
-    public Book createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
+    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
         return bookService.save(bookDto);
     }
 }
