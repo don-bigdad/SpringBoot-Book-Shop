@@ -17,7 +17,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface CategoryMapper {
     CategoryDto toDto(Category category);
 
-    Category toEntity(CategoryDto categoryDto);
+    Category toEntity(CategoryRequestDto categoryDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateCategory(CategoryRequestDto dto, @MappingTarget Category category);

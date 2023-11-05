@@ -33,8 +33,13 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(
             EntityNotFoundException ex) {
-        System.out.println(ex.getMessage());
         return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RegistrationException.class)
+    public ResponseEntity<Object> handleRegistrationException(
+            RegistrationException ex) {
+        return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
     }
 
     private String getErrorMessage(ObjectError e) {
