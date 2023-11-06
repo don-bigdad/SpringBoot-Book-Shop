@@ -11,12 +11,12 @@ import com.example.springbootbookshop.repository.BookRepository;
 import com.example.springbootbookshop.repository.CategoryRepository;
 import com.example.springbootbookshop.service.BookService;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
@@ -26,6 +26,7 @@ public class BookServiceImpl implements BookService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Transactional
     public BookDto save(CreateBookRequestDto bookDto) {
         Set<Category> categories = getCategories(bookDto);
         Book book = bookMapper.toBook(bookDto);
@@ -54,6 +55,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookDto update(CreateBookRequestDto bookRequestDto, Long id) {
         Book bookToUpdate = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Can`t find book with id:" + id));
@@ -76,10 +78,7 @@ public class BookServiceImpl implements BookService {
 
     private Set<Category> getCategories(CreateBookRequestDto bookDto) {
         return bookDto.categoryIds().stream()
-                .map(id -> categoryRepository.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException(
-                                "Category with id" + id + " doesn`t exist")))
-                .filter(Objects::nonNull)
+                .map(categoryRepository::getReferenceById)
                 .collect(Collectors.toSet());
     }
 }

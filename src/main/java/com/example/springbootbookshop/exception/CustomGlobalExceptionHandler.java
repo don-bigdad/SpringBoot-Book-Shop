@@ -39,7 +39,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(RegistrationException.class)
     public ResponseEntity<Object> handleRegistrationException(
             RegistrationException ex) {
-        return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.CONFLICT);
     }
 
     private String getErrorMessage(ObjectError e) {

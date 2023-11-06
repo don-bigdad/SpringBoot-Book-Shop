@@ -34,7 +34,7 @@ public class CategoryController {
     private final BookService bookService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create new category (for admin only)")
     public CategoryDto createCategory(@RequestBody @Valid CategoryRequestDto categoryDto) {
