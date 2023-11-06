@@ -20,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDto> findAll() {
         return categoryRepository.findAll().stream()
-                .map(category -> categoryMapper.toDto(category))
+                .map(categoryMapper::toDto)
                 .toList();
     }
 
@@ -33,9 +33,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto save(CategoryDto categoryDto) {
-        categoryRepository.save(categoryMapper.toEntity(categoryDto));
-        return categoryDto;
+    public CategoryDto save(CategoryRequestDto categoryDto) {
+        Category save = categoryRepository.save(categoryMapper.toEntity(categoryDto));
+        return categoryMapper.toDto(save);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category categoryToUpdate = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can`t find category with id:" + id));
-        categoryMapper.updateCategory(categoryRequestDtoDto,categoryToUpdate);
+        categoryMapper.updateCategory(categoryRequestDtoDto, categoryToUpdate);
         return categoryMapper.toDto(categoryRepository.save(categoryToUpdate));
     }
 
