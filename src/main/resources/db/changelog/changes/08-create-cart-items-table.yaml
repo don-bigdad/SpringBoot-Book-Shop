@@ -9,10 +9,10 @@ databaseChangeLog:
               - column:
                   name: id
                   type: BIGINT
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
-                    autoIncrement: true
               - column:
                   name: cart_id
                   type: BIGINT
@@ -28,16 +28,3 @@ databaseChangeLog:
                   type: INTEGER
                   constraints:
                     nullable: false
-              - addForeignKeyConstraint:
-                  baseTableName: cart_items
-                  baseColumnNames: cart_id
-                  referencedTableName: carts
-                  referencedColumnNames: id
-                  constraintName: FK_cart_items_cart
-                  onDelete: CASCADE
-              - addForeignKeyConstraint:
-                  baseTableName: cart_items
-                  baseColumnNames: book_id
-                  referencedTableName: books
-                  referencedColumnNames: id
-                  constraintName: FK_cart_items_book
