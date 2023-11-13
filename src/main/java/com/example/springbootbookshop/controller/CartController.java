@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Cart management",description = "Endpoints for managing carts")
 @RestController
 @Validated
-@RequestMapping(value = "/cart")
+@RequestMapping("/cart")
 public class CartController {
     private final CartService cartService;
 
@@ -48,21 +48,20 @@ public class CartController {
         return cartService.addItemToCart(getUserId(authentication), cartItem);
     }
 
-    @DeleteMapping(value = "cart-items/{id}")
+    @DeleteMapping("cart-items/{id}")
     @Operation(summary = "Delete cart item from the user cart")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeCartItem(Authentication authentication,
-                                     @PathVariable @Positive Long id) {
+    public void removeCartItem(@PathVariable @Positive Long id) {
         cartService.removeItem(id);
     }
 
-    @PutMapping(value = "cart-items/{id}")
+    @PutMapping("cart-items/{id}")
     @Operation(summary = "Update cart item in the user cart")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     public CartItemDto updateItemQuantity(@PathVariable @Positive Long id,
-                                          @RequestBody UpdateRequestCartItemDto quantity) {
+                                          @RequestBody @Valid UpdateRequestCartItemDto quantity) {
         return cartService.updateCartItem(id, quantity);
     }
 

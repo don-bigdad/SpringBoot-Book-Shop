@@ -13,11 +13,10 @@ import com.example.springbootbookshop.mapper.CartMapper;
 import com.example.springbootbookshop.repository.BookRepository;
 import com.example.springbootbookshop.repository.CartItemsRepository;
 import com.example.springbootbookshop.repository.CartRepository;
-import com.example.springbootbookshop.repository.UserRepository;
 import com.example.springbootbookshop.service.CartService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,10 +24,10 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
     private final BookRepository bookRepository;
-    private final UserRepository userRepository;
     private final CartItemMapper cartItemMapper;
     private final CartItemsRepository cartItemsRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public CartDto findById(Long id) {
         Cart cart = cartRepository.getCartByUserId(id).orElseThrow(
@@ -39,23 +38,22 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public CartItemDto addItemToCart(Long userId, RequestCartItemDto requestCartItemDto) {
         Cart cart = cartRepository.getCartByUserId(userId).get();
         Book book = bookRepository.findById(requestCartItemDto.bookId()).orElseThrow(
                 () -> new EntityNotFoundException("Book with id: " + requestCartItemDto.bookId()
                         + "doesn`t exist"));
         int quantityToAdd = requestCartItemDto.quantity();
-        Optional<CartItem> existingCartItem = cartItemsRepository.findByCartAndBook(cart, book);
-        if (existingCartItem.isPresent()) {
-            existingCartItem.get().setQuantity(existingCartItem.get()
-                    .getQuantity() + quantityToAdd);
-            cartItemsRepository.save(existingCartItem.get());
-            return cartItemMapper.toDto(existingCartItem.get());
-        }
-        CartItem entity = cartItemMapper.toEntity(requestCartItemDto);
-        entity.setBook(book);
-        entity.setCart(cart);
-        return cartItemMapper.toDto(cartItemsRepository.save(entity));
+        CartItem cartItem = cartItemsRepository.findByCartAndBook(cart, book)
+                .orElseGet(() -> {
+                    CartItem newCartItem = cartItemMapper.toEntity(requestCartItemDto);
+                    newCartItem.setBook(book);
+                    newCartItem.setCart(cart);
+                    return newCartItem;
+                });
+        cartItem.setQuantity(quantityToAdd + cartItem.getQuantity());
+        return cartItemMapper.toDto(cartItemsRepository.save(cartItem));
     }
 
     @Override

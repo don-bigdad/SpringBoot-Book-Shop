@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Book management",description = "Endpoints for managing books")
 @RestController
 @Validated
-@RequestMapping(value = "/books")
+@RequestMapping("/books")
 public class BookController {
     private final BookService bookService;
 
@@ -41,7 +41,7 @@ public class BookController {
         return bookService.findAll(pageable);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete book by id")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -49,7 +49,7 @@ public class BookController {
         bookService.deleteById(id);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get book by Id from DB")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
@@ -57,7 +57,7 @@ public class BookController {
         return bookService.getBookById(id);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update book by Id in DB")
     @ResponseStatus(HttpStatus.OK)
