@@ -52,8 +52,9 @@ public class CartController {
     @Operation(summary = "Delete cart item from the user cart")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeCartItem(@PathVariable @Positive Long id) {
-        cartService.removeItem(id);
+    public void removeCartItem(Authentication authentication,
+                               @PathVariable @Positive Long id) {
+        cartService.removeItem(getUserId(authentication), id);
     }
 
     @PutMapping("cart-items/{id}")

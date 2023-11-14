@@ -10,7 +10,7 @@ public interface CartService {
 
     CartItemDto addItemToCart(Long id, RequestCartItemDto requestCartItemDto);
 
-    void removeItem(Long itemId);
+    void removeItem(Long userId, Long itemId);
 
     CartItemDto updateCartItem(Long id, UpdateRequestCartItemDto quantity);
 }
