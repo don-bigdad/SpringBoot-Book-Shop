@@ -57,11 +57,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeItem(Long itemId) {
-        if (!cartItemsRepository.existsById(itemId)) {
-            throw new EntityNotFoundException("Item with id: " + itemId
-                    + " doesn`t exist");
-        }
+    @Transactional
+    public void removeItem(Long userId, Long itemId) {
+        Cart cart = cartRepository.getCartByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Shopping cart not found for user with id: " + userId));
+        CartItem cartItem = cartItemsRepository.getCartItemsByIdAndCartId(itemId,
+                        cart.getId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Cart item not found in the user's shopping cart"));
         cartItemsRepository.deleteById(itemId);
     }
 
