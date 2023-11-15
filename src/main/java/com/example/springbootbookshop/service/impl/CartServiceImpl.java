@@ -46,13 +46,14 @@ public class CartServiceImpl implements CartService {
                         + "doesn`t exist"));
         int quantityToAdd = requestCartItemDto.quantity();
         CartItem cartItem = cartItemsRepository.findByCartAndBook(cart, book)
-                .orElseGet(() -> {
-                    CartItem newCartItem = cartItemMapper.toEntity(requestCartItemDto);
-                    newCartItem.setBook(book);
-                    newCartItem.setCart(cart);
-                    return newCartItem;
-                });
-        cartItem.setQuantity(quantityToAdd + cartItem.getQuantity());
+                .orElse(null);
+        if (cartItem == null) {
+            cartItem = cartItemMapper.toEntity(requestCartItemDto);
+            cartItem.setBook(book);
+            cartItem.setCart(cart);
+        } else {
+            cartItem.setQuantity(cartItem.getQuantity() + quantityToAdd);
+        }
         return cartItemMapper.toDto(cartItemsRepository.save(cartItem));
     }
 
