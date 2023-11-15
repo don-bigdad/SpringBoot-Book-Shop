@@ -2,11 +2,13 @@ package com.example.springbootbookshop.service.impl;
 
 import com.example.springbootbookshop.dto.user.UserRegistrationRequestDto;
 import com.example.springbootbookshop.dto.user.UserResponseDto;
+import com.example.springbootbookshop.entity.Cart;
 import com.example.springbootbookshop.entity.Role;
 import com.example.springbootbookshop.entity.RoleName;
 import com.example.springbootbookshop.entity.User;
 import com.example.springbootbookshop.exception.RegistrationException;
 import com.example.springbootbookshop.mapper.UserMapper;
+import com.example.springbootbookshop.repository.CartRepository;
 import com.example.springbootbookshop.repository.RoleRepository;
 import com.example.springbootbookshop.repository.UserRepository;
 import com.example.springbootbookshop.service.UserService;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final CartRepository cartRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -35,7 +38,14 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toUser(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.password()));
         user.setRoles(getUserRole());
-        return userMapper.toUserDto(userRepository.save(user));
+        setShoppingCartForUser(userRepository.save(user));
+        return userMapper.toUserDto(user);
+    }
+
+    private void setShoppingCartForUser(User user) {
+        Cart cart = new Cart();
+        cart.setUser(user);
+        cartRepository.save(cart);
     }
 
     private Set<Role> getUserRole() {
