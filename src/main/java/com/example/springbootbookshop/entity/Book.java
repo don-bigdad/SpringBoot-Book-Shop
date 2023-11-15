@@ -55,5 +55,7 @@ public class Book {
     private Set<Category> categories = new HashSet<>();
 
     @OneToMany(mappedBy = "book",orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<CartItem> cartItems = new ArrayList<>();
 }
