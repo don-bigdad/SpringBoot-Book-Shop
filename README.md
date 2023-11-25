@@ -40,41 +40,107 @@ This is an overview of the project that will be implemented gradually throughout
 
 ## Technologies Used
 <details>
-  <summary><img src="https://trellat.es/wp-content/uploads/spring-boot-logo-300x300.png" width="30"/> Spring Boot</summary>
+  <summary><img src="https://trellat.es/wp-content/uploads/spring-boot-logo-300x300.png" height="30" width="30"/> Spring Boot</summary>
 
 `In this project, I used Spring Boot as the main framework for building the application.`
 </details>
 
 <details>
-  <summary><img src="https://th.bing.com/th/id/R.de96e7f7a17f2057614a627531a45ef4?rik=6M2yfVh4aSx5wA&pid=ImgRaw&r=0" width="30"/> Java</summary>
+  <summary><img src="https://th.bing.com/th/id/R.de96e7f7a17f2057614a627531a45ef4?rik=6M2yfVh4aSx5wA&pid=ImgRaw&r=0" height="30" width="30"/> Java</summary>
 
 `In my project, I choose Java as the main programming language.`
 </details>
 
 <details>
-  <summary><img src="icon_url" width="30"/> Hibernate</summary>
+  <summary><img src="https://www.vectorlogo.zone/logos/hibernate/hibernate-ar21.png" height="30" width="30"/> Hibernate</summary>
 
 `I utilized Hibernate as the ORM (Object-Relational Mapping) framework.`
 </details>
 
 <details>
-  <summary><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwsq-7f5BWyog4cdeT1sQaYLVzhJ0o37Up8TjHvVU08WUgfyyMMRMHTVwJ5XReSjyhZa0&usqp=CAU" width="30"/> Spring Security</summary>
+  <summary><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwsq-7f5BWyog4cdeT1sQaYLVzhJ0o37Up8TjHvVU08WUgfyyMMRMHTVwJ5XReSjyhZa0&usqp=CAU" height="30" width="30"/> Spring Security</summary>
 
 `I implemented with Spring Security to manage authentication and authorization.`
 </details>
 
 <details>
-  <summary><img src="https://velog.velcdn.com/images/knavoid/post/a7f881b0-6a0c-4866-8b12-fffe9b3f37e0/image.png" width="30"/> Spring Data JPA</summary>
+  <summary><img src="https://velog.velcdn.com/images/knavoid/post/a7f881b0-6a0c-4866-8b12-fffe9b3f37e0/image.png" height="30" width="30"/> Spring Data JPA</summary>
 
 `In this project, I used Spring Data JPA for simplified data access and manipulation.`
 </details>
 
 <details>
-  <summary><img src="https://th.bing.com/th/id/OIP.RJMiOW4RJ3d1o01vXnqEPAHaFj?rs=1&pid=ImgDetMain" width="30"/> Maven</summary>
+  <summary><img src="https://th.bing.com/th/id/OIP.RJMiOW4RJ3d1o01vXnqEPAHaFj?rs=1&pid=ImgDetMain" height="30" width="30"/> Maven</summary>
 
 `I relied on Maven for project management and build automation.`
 </details>
 
+# Database structure:
+\
+![scheme](structure/db_schema.png)
+
+---
+
+# Project controllers with the following endpoints:
+
+
+---
+
+## **Authentication Controller:**
+
+| **HTTP method** | **Endpoint**  | **Role** | **Function** |
+|:----------------:|:--------------:|:--------:|:-------------|
+| POST | /register | ALL | Allows users to register a new account. |
+| POST | /login | ALL | Get JWT tokens for authentication. |
+
+---
+
+## **Book Controller:** _Searching for books (CRUD for books)_
+
+| **HTTP method** | **Endpoint**  | **Role** | **Function**                       |
+|:---------------:|:-------------:|:--------:|:-----------------------------------|
+|       GET       |    /books     |   USER   | Endpoints for managing books.      |
+|       GET       |  /books/{id}  |   USER   | Search for a specific book by id.  |
+|       PUT       | /{books}/{id} |  ADMIN   | Allows admin to update book by id. |
+|      POST       |   /{books}    |  ADMIN   | Allows admin to create new book.   |
+|     DELETE      | /{books}/{id} |  ADMIN   | Allows admin to delete book.       |
+
+---
+
+## **Category Controller:** _Managing category (CRUD for Categories)_
+
+| **HTTP method** |   **Endpoint**    | **Role** | **Function**                          |
+|:--------------:|:-----------------:|:--------:|:--------------------------------------|
+|      POST      |     /category     |  ADMIN   | Allow admin to create a new category. |
+|       GET      |     /category     |   USER   | Get all categories from DB.           |
+|       GET      |  /category/{id}   |   USER   | Get category by id from DB.           |
+|       PUT      |  /category/{id}   |  ADMIN   | Update category by id.                |
+|    DELETE      |  /category/{id}   |  ADMIN   | Allow admin delete some category.     |
+
+---
+
+## **Cart Controller:** _User cart management_
+
+| **HTTP method** |    **Endpoint**     | **Role** | **Function**                                   |
+|:---------------:|:-------------------:|:--------:|:-----------------------------------------------|
+|       GET       |        /cart        |   USER   | Get cart from logged user from DB.             |
+|      POST       |        /cart        |   USER   | Add books to the user cart".                   |
+|     DELETE      |  /cart-items/{id}   |   USER   | Delete cart item from the user cart.           |
+|       PUT       |  /cart-items/{id}   |   USER   | Update quantity of cart item in the user cart. |
+
+---
+
+## **Order Controller:** _Managing orders_
+
+| **HTTP method** |           **Endpoint**           | **Role** | **Function**                         |
+|:--------------:|:--------------------------------:|:--------:|:-------------------------------------|
+|      POST      |             /orders              |   USER   | Allow user to make new order.        |
+|       PUT      |        /orders/{orderId}         |  ADMIN   | Allows admin to update order status. |
+|       GET      |             /orders              |   USER   | Get order history.                   |
+|       GET      | /orders/{orderId}/items/{itemId} |   USER   | Get item from order.                 |
+|       GET      |     /orders/{orderId}/items      |   USER   | Get all items from order.            |
+
+---
 
 ## Project Setup
 
@@ -83,7 +149,6 @@ To set up the project locally, follow these steps:
 2. Navigate to the project directory: `cd your_project`
 3. Build the project using Maven: `mvn clean install`
 4. Run the application: `mvn spring-boot:run`
-
 ## Contact
 
 For additional information or inquiries, please contact:
