@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project aims to develop an Online Book Store application, implemented step by step. The app will feature several domain models/entities:
+The online bookstore management system offers a user-friendly interface for customers and administrators while ensuring security through authentication and authorization using JWT tokens. Customers can easily sign up, browse books, manage their shopping carts, place orders, and review their order history. Administrators, on the other hand, have tools to efficiently handle the book catalog, categories, and monitor order statuses. The project's aim is to create a convenient API that enhances the online book purchasing experience and simplifies administrative tasks.
 
 - **User**: Contains registered user information, including authentication details and personal information.
 - **Role**: Represents user roles within the system, such as admin or regular user.
@@ -12,10 +12,6 @@ This project aims to develop an Online Book Store application, implemented step 
 - **CartItem**: Represents items in a user's shopping cart.
 - **Order**: Represents orders placed by users.
 - **OrderItem**: Represents items in a user's order.
-
-This is an overview of the project that will be implemented gradually throughout this module. The project will be divided into parts. Create a new GitHub repository for this project, which you can later share in your CV as proof of your work for potential interviewers.
-
-## People Involved
 
 ### Shopper (User)
 - Looks at books, adds them to the shopping cart, and makes purchases.
