@@ -142,7 +142,7 @@ The online bookstore management system offers a user-friendly interface for cust
 
 To set up the project locally, follow these steps:
 1. Clone the repository: `git clone https://github.com/don-bigdad/SpringBoot-Book-Shop.git`
-2. Navigate to the project directory: `cd your_project`
+2. Navigate to the project directory: `cd SpringBoot-Book-Shop`
 3. Build the project using Maven: `mvn clean install`
 4. Run the application: `mvn spring-boot:run`
 ## Contact
@@ -150,4 +150,4 @@ To set up the project locally, follow these steps:
 For additional information or inquiries, please contact:
 - Email: bohdan.maksymenko.jv@gmail.com
 - Telegram: https://t.me/Blgdad
-- LinkedIn: [Your LinkedIn Profile](https://www.linkedin.com/in/your_profile)
+- LinkedIn: [LinkedIn Profile](https://www.linkedin.com/in/bohdan-maksymenko-2a4aa2292/)
