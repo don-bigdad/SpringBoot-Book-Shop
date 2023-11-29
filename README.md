@@ -34,42 +34,18 @@ The online bookstore management system offers a user-friendly interface for cust
 - **Organize bookshelf sections**: Create, update, or remove book categories.
 - **Manage receipts**: Update receipt statuses (e.g., "Shipped" or "Delivered").
 
-## Technologies Used
-<details>
-  <summary><img src="https://trellat.es/wp-content/uploads/spring-boot-logo-300x300.png" height="30" width="30"/> Spring Boot</summary>
+# Technologies Used
 
-`In this project, I used Spring Boot as the main framework for building the application.`
-</details>
-
-<details>
-  <summary><img src="https://th.bing.com/th/id/R.de96e7f7a17f2057614a627531a45ef4?rik=6M2yfVh4aSx5wA&pid=ImgRaw&r=0" height="30" width="30"/> Java</summary>
-
-`In my project, I choose Java as the main programming language.`
-</details>
-
-<details>
-  <summary><img src="https://www.vectorlogo.zone/logos/hibernate/hibernate-ar21.png" height="30" width="30"/> Hibernate</summary>
-
-`I utilized Hibernate as the ORM (Object-Relational Mapping) framework.`
-</details>
-
-<details>
-  <summary><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwsq-7f5BWyog4cdeT1sQaYLVzhJ0o37Up8TjHvVU08WUgfyyMMRMHTVwJ5XReSjyhZa0&usqp=CAU" height="30" width="30"/> Spring Security</summary>
-
-`I implemented with Spring Security to manage authentication and authorization.`
-</details>
-
-<details>
-  <summary><img src="https://velog.velcdn.com/images/knavoid/post/a7f881b0-6a0c-4866-8b12-fffe9b3f37e0/image.png" height="30" width="30"/> Spring Data JPA</summary>
-
-`In this project, I used Spring Data JPA for simplified data access and manipulation.`
-</details>
-
-<details>
-  <summary><img src="https://th.bing.com/th/id/OIP.RJMiOW4RJ3d1o01vXnqEPAHaFj?rs=1&pid=ImgDetMain" height="30" width="30"/> Maven</summary>
-
-`I relied on Maven for project management and build automation.`
-</details>
+- **Spring Boot v3.1.4:** Utilized as the primary framework for building the application.
+- **Spring Security v6.1.5:** Implemented for authentication and authorization management using JWT token.
+- **Java version 17:** Chosen as the main programming language.
+- **Database Management:** MySQL 8.0.33, Hibernate as main ORM framework, Liquibase v4.20.0
+- **Spring Data JPA:** Utilized for simplified data access and manipulation.
+- **Deployment and Cloud Services:** Docker 3.8, AWS
+- **Testing:** JUnit 5, Mockito
+- **Maven:** Relied on for project management and build automation.
+- **Additional instruments:** Lombok, Mapstruct
+- **Documentation:** Swagger
 
 # Database structure:
 \
@@ -149,5 +125,5 @@ To set up the project locally, follow these steps:
 
 For additional information or inquiries, please contact:
 - Email: bohdan.maksymenko.jv@gmail.com
-- Telegram: https://t.me/Blgdad
-- LinkedIn: [LinkedIn Profile](https://www.linkedin.com/in/bohdan-maksymenko-2a4aa2292/)
+- [Telegram](https://t.me/Blgdad)
+- [LinkedIn](https://www.linkedin.com/in/bohdan-maksymenko-2a4aa2292/)
