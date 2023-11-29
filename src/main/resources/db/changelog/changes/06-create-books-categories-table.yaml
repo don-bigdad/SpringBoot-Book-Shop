@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-users-roles-table
+      author: bohdan-maksymenko
+      changes:
+        - createTable:
+            tableName: books_categories
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: book_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: category_id
+                  type: BIGINT
