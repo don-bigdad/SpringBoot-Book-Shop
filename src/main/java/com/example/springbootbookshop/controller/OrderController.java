@@ -14,6 +14,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "Order management",description = "Endpoints make orders")
 @RestController
+@Validated
 @RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
@@ -34,7 +36,7 @@ public class OrderController {
     @PreAuthorize("hasRole('USER')")
     public CartDto makeOrder(Authentication authentication,
                              @RequestBody RequestOrderDto requestOrderDto) {
-        return orderService.save(getUserId(authentication), requestOrderDto);
+        return orderService.save(((User) authentication.getPrincipal()).getId(), requestOrderDto);
     }
 
     @PatchMapping("/{orderId}")
@@ -48,30 +50,25 @@ public class OrderController {
     @GetMapping
     @Operation(summary = "Get order history")
     @PreAuthorize("hasRole('USER')")
-    public Set<OrderDto> showOrderHistory(Authentication authentication) {
-        return orderService.showAllOrders(getUserId(authentication));
+    public Set<OrderDto> getOrderHistory(Authentication authentication) {
+        return orderService.getAllOrders(((User) authentication.getPrincipal()).getId());
     }
 
     @GetMapping("/{orderId}/items/{itemId}")
     @Operation(summary = "Get special item from order history")
     @PreAuthorize("hasRole('USER')")
-    public OrderItemDto showOrderItem(Authentication authentication,
+    public OrderItemDto getOrderItem(Authentication authentication,
                                       @PathVariable @Positive Long orderId,
                                       @PathVariable @Positive Long itemId) {
-        return orderService.getOrderItem(getUserId(authentication),
+        return orderService.getOrderItem(((User) authentication.getPrincipal()).getId(),
                 orderId, itemId);
     }
 
     @GetMapping("/{orderId}/items")
     @Operation(summary = "Get special order from user history")
     @PreAuthorize("hasRole('USER')")
-    public Set<OrderItemDto> showOrder(Authentication authentication,
+    public Set<OrderItemDto> getOrder(Authentication authentication,
                                        @PathVariable Long orderId) {
-        return orderService.getOrder(getUserId(authentication), orderId);
-    }
-
-    private Long getUserId(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return user.getId();
+        return orderService.getOrder(((User) authentication.getPrincipal()).getId(), orderId);
     }
 }

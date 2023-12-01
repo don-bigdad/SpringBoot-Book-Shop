@@ -12,7 +12,6 @@ import org.mapstruct.NullValueCheckStrategy;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         implementationPackage = "<PACKAGE_NAME>.impl")
 public interface OrderItemMapper {
-
     @Mapping(source = "book.id", target = "bookId")
     OrderItemDto toDto(OrderItem orderItem);
 }

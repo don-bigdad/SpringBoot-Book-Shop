@@ -14,7 +14,7 @@ public interface OrderService {
 
     Set<OrderItemDto> getOrder(Long userId, Long orderId);
 
-    Set<OrderDto> showAllOrders(Long userId);
+    Set<OrderDto> getAllOrders(Long userId);
 
     void updateOrderStatus(Long orderId, UpdateRequestOrderStatus status);
 }

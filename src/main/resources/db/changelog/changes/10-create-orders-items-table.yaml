@@ -39,17 +39,3 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
-        - addForeignKeyConstraint:
-            baseTableName: order_items
-            baseColumnNames: order_id
-            referencedTableName: orders
-            referencedColumnNames: id
-            constraintName: FK_order_items_order
-            onDelete: CASCADE
-        - addForeignKeyConstraint:
-            baseTableName: order_items
-            baseColumnNames: book_id
-            referencedTableName: books
-            referencedColumnNames: id
-            constraintName: FK_order_items_book
-            onDelete: CASCADE

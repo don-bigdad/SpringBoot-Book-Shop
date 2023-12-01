@@ -47,13 +47,10 @@ public class CartServiceImpl implements CartService {
         int quantityToAdd = requestCartItemDto.quantity();
         CartItem cartItem = cartItemsRepository.findByCartAndBook(cart, book)
                 .orElse(null);
-        if (cartItem == null) {
-            cartItem = cartItemMapper.toEntity(requestCartItemDto);
-            cartItem.setBook(book);
-            cartItem.setCart(cart);
-        } else {
-            cartItem.setQuantity(cartItem.getQuantity() + quantityToAdd);
-        }
+        cartItem = (cartItem == null) ? cartItemMapper.toEntity(requestCartItemDto) : cartItem;
+        cartItem.setBook(book);
+        cartItem.setCart(cart);
+        cartItem.setQuantity(cartItem.getQuantity() + ((cartItem.getId() == null) ? 0 : quantityToAdd));
         return cartItemMapper.toDto(cartItemsRepository.save(cartItem));
     }
 
@@ -63,7 +60,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.getCartByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Shopping cart not found for user with id: " + userId));
-        CartItem cartItem = cartItemsRepository.getCartItemsByIdAndCartId(itemId,
+        cartItemsRepository.getCartItemsByIdAndCartId(itemId,
                         cart.getId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Cart item not found in the user's shopping cart"));

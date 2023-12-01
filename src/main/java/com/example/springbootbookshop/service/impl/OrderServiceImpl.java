@@ -12,6 +12,7 @@ import com.example.springbootbookshop.entity.OrderItem;
 import com.example.springbootbookshop.entity.Status;
 import com.example.springbootbookshop.exception.EntityNotFoundException;
 import com.example.springbootbookshop.mapper.CartMapper;
+import com.example.springbootbookshop.mapper.OrderItemMapper;
 import com.example.springbootbookshop.mapper.OrderMapper;
 import com.example.springbootbookshop.repository.CartItemsRepository;
 import com.example.springbootbookshop.repository.CartRepository;
@@ -37,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
     private final CartMapper cartMapper;
     private final OrderItemsRepository orderItemsRepository;
     private final OrderMapper orderMapper;
+    private final OrderItemMapper orderItemMapper;
 
     @Override
     @Transactional
@@ -46,54 +48,37 @@ public class OrderServiceImpl implements OrderService {
             throw new EntityNotFoundException("You cart is empty");
         }
         Order order = new Order();
-        order.setUser(userRepository.getReferenceById(userId));
-        order.setShippingAddress(requestOrderDto.shippingAddress());
-        order.setTotal(calculateTotal(cart));
-        order.setOrderDate(LocalDateTime.now());
-        order.setStatus(Status.PENDING);
+        setOrderFields(order, userId, cart,requestOrderDto.shippingAddress());
+
         orderRepository.save(order);
         Set<CartItem> cartItems = cartItemsRepository.findByCart(cart);
-
-        cartItems.stream()
-                .map(cartItem -> {
-                    OrderItem orderItem = new OrderItem();
-                    orderItem.setOrder(order);
-                    orderItem.setBook(cartItem.getBook());
-                    orderItem.setPrice(cartItem.getBook().getPrice()
-                            .multiply(BigDecimal.valueOf(cartItem.getQuantity())));
-                    orderItem.setQuantity(cartItem.getQuantity());
-                    return orderItem;
-                })
-                .forEach(orderItemsRepository::save);
-
+        saveCartItems(cartItems,order);
         cartItemsRepository.deleteAll(cartItems);
         return cartMapper.toDto(cart);
     }
 
     @Override
     public OrderItemDto getOrderItem(Long userId, Long orderId, Long itemId) {
-        Set<Order> userOrders = orderRepository.findAllByUserId(userId);
-        Order userOrder = userOrders.stream()
-                .filter(order -> order.getId().equals(orderId))
-                .findFirst()
+        Order userOrder = orderRepository.findOrderByIdAndUserId(orderId, userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "User doen`t have order with id: " + orderId));
-        return orderItemsRepository.findByOrderAndId(userOrder, itemId).orElseThrow(() ->
-                new EntityNotFoundException("Item with id: " + itemId + " doesn`t found"));
+        return orderItemMapper.toDto(orderItemsRepository.findByOrderAndId(userOrder, itemId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Item with id: " + itemId + " doesn`t found")));
     }
 
     @Override
     public Set<OrderItemDto> getOrder(Long userId, Long orderId) {
-        Order orderItemsUser = orderRepository.findAllByUserId(userId).stream()
-                .filter(order -> order.getId().equals(orderId))
-                .findFirst()
+        Order orderItemsUser = orderRepository.findOrderByIdAndUserId(orderId, userId)
                 .orElseThrow(() -> new EntityNotFoundException("No order with id: " + orderId
                         + " for user with id: " + userId));
-        return orderItemsRepository.findByOrder(orderItemsUser);
+        return orderItemsRepository.findByOrder(orderItemsUser).stream()
+                .map(orderItemMapper::toDto)
+                .collect(Collectors.toSet());
     }
 
     @Override
-    public Set<OrderDto> showAllOrders(Long userId) {
+    public Set<OrderDto> getAllOrders(Long userId) {
         return orderRepository.findAllByUserId(userId).stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toSet());
@@ -105,6 +90,28 @@ public class OrderServiceImpl implements OrderService {
                                   UpdateRequestOrderStatus status) {
         Order order = orderRepository.getReferenceById(orderId);
         order.setStatus(status.status());
+    }
+
+    private void saveCartItems(Set<CartItem> cartItems,Order order) {
+        cartItems.stream()
+                .map(cartItem -> {
+                    OrderItem orderItem = new OrderItem();
+                    orderItem.setOrder(order);
+                    orderItem.setBook(cartItem.getBook());
+                    orderItem.setPrice(cartItem.getBook().getPrice()
+                            .multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+                    orderItem.setQuantity(cartItem.getQuantity());
+                    return orderItem;
+                })
+                .forEach(orderItemsRepository::save);
+    }
+
+    private void setOrderFields(Order order, Long userId, Cart cart, String address) {
+        order.setUser(userRepository.getReferenceById(userId));
+        order.setShippingAddress(address);
+        order.setTotal(calculateTotal(cart));
+        order.setOrderDate(LocalDateTime.now());
+        order.setStatus(Status.PENDING);
     }
 
     private BigDecimal calculateTotal(Cart cart) {

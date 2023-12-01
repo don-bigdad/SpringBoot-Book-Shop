@@ -51,7 +51,7 @@ public class Order {
     private String shippingAddress;
 
     @OneToMany(mappedBy = "order", orphanRemoval = true,
-            cascade = CascadeType.REMOVE)
+            cascade = CascadeType.ALL)
     @Column(nullable = false)
     private Set<OrderItem> orderItems = new HashSet<>();
 
