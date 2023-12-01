@@ -46,7 +46,7 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findById(id)
                 .map(bookMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Can`t find"
-                        + "book with id:" + id));
+                        + " book with id:" + id));
     }
 
     @Override
