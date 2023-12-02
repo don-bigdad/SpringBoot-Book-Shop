@@ -30,7 +30,7 @@ public class BookRepositoryTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/books/clear-books-db.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void getBookByIdTestAssertSuccess() {
+    void getBookByIdTestAssertSuccess() {
         Optional<Book> book1 = bookRepository.findById(1L);
         Optional<Book> book2 = bookRepository.findById(2L);
         assertEquals(1L,book1.get().getId());
@@ -46,7 +46,7 @@ public class BookRepositoryTest {
     @Sql(scripts = {"classpath:database/books/clear-books-db.sql",
             "classpath:database/category/clear-category.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void getAllBooksByCategoryId() {
+    void getAllBooksByCategoryId() {
         Book book1 = bookRepository.findById(1L).get();
         Book book2 = bookRepository.findById(2L).get();
         Book book3 = bookRepository.findById(3L).get();
@@ -69,7 +69,7 @@ public class BookRepositoryTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/books/clear-books-db.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void getAllBooksFromDbAssertSuccess() {
+    void getAllBooksFromDbAssertSuccess() {
         Page<Book> books = bookRepository.findAll(PageRequest.of(0, 5));
         assertEquals(3L, books.getTotalElements());
     }

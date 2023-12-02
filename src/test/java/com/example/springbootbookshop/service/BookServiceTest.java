@@ -47,7 +47,7 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Get book by id")
-    public void getBookByExistId() {
+    void getBookByExistId() {
         Book expect = getDefaultBook();
         when(bookRepository.findById(1L)).thenReturn(Optional.of(expect));
         BookDto actual = bookService.getBookById(1L);
@@ -57,7 +57,7 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Save book")
-    public void saveBook() {
+    void saveBook() {
         CreateBookRequestDto dto = getCreateRequestBookDto();
         bookService.save(dto);
         bookService.save(dto);
@@ -66,7 +66,7 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Delete book by id")
-    public void deleteBookById() {
+    void deleteBookById() {
         Long bookId = 1L;
         bookService.deleteById(bookId);
         verify(bookRepository, times(1)).deleteById(bookId);
@@ -74,7 +74,7 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Get books by category id")
-    public void getAllBooksByExistCategory() {
+    void getAllBooksByExistCategory() {
         Book book1 = getDefaultBook();
         Book book2 = getDefaultBook();
         book2.setId(2L);
@@ -88,7 +88,7 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Update book")
-    public void updateBookAssertSuccess() {
+    void updateBookAssertSuccess() {
         Book bookToUpdate = getDefaultBook();
         BigDecimal oldPrice = BigDecimal.TEN;
         assertEquals(oldPrice, bookToUpdate.getPrice());
@@ -103,7 +103,7 @@ public class BookServiceTest {
 
     @Test
     @DisplayName("Find all books")
-    public void findAllBooks() {
+    void findAllBooks() {
         Book book1 = getDefaultBook();
         Book book2 = getDefaultBook();
         book2.setId(2L);

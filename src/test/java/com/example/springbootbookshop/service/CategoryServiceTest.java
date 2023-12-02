@@ -35,7 +35,7 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("Find all categories test")
-    public void getAllCategories() {
+    void getAllCategories() {
         List<Category> categories = getDefaultCategories();
         List<CategoryDto> dtos = categories.stream()
                 .map(categoryMapper::toDto)
@@ -51,7 +51,7 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("Get category by id")
-    public void getCategoryByIdExpectSuccess() {
+    void getCategoryByIdExpectSuccess() {
         List<Category> categories = getDefaultCategories();
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(categories.get(0)));
         CategoryDto expected = categoryMapper.toDto(categories.get(0));
@@ -63,7 +63,7 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("Create a new category")
-    public void saveNewCategorySuccess() {
+    void saveNewCategorySuccess() {
         CategoryRequestDto firstCategory = new CategoryRequestDto(
                 "Category1",
                 "Description1");
@@ -75,7 +75,7 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("Update category")
-    public void updateCategoryAssertSuccess() {
+    void updateCategoryAssertSuccess() {
         Category categoryToUpdate = getDefaultCategories().get(0);
         String oltName = "Category1";
         assertEquals(oltName, categoryToUpdate.getName());
@@ -100,7 +100,7 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("Delete existing category by id")
-    public void deleteExistingCategoryById() {
+    void deleteExistingCategoryById() {
 
         when(categoryRepository.existsById(1L)).thenReturn(true);
 

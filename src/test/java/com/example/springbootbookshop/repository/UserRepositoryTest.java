@@ -22,7 +22,7 @@ public class UserRepositoryTest {
     @DisplayName("Get user with exist mail")
     @Sql(scripts = "classpath:database/user/insert-user.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    public void getUserWithExistMail() {
+    void getUserWithExistMail() {
         User existUser = userRepository.findByEmail("user1@example.com").get();
         assertNotNull(existUser);
         assertEquals(1L, existUser.getId());
