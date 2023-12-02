@@ -27,7 +27,7 @@ public class BookRepositoryTest {
     @Test
     @DisplayName("Find book where id 1 and 2")
     @Sql(scripts = "classpath:database/books/insert-books.sql",
-    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/books/clear-books-db.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getBookByIdTestAssertSuccess() {
@@ -39,7 +39,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    @DisplayName("Find all books where category id 2")
+    @DisplayName("Find all books where category id 1 and 2")
     @Sql(scripts = {"classpath:database/books/insert-books.sql",
             "classpath:database/category/insert-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
