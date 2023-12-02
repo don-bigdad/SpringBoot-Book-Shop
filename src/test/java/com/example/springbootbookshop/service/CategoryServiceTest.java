@@ -101,14 +101,13 @@ public class CategoryServiceTest {
     @Test
     @DisplayName("Delete existing category by id")
     public void deleteExistingCategoryById() {
-        Long categoryId = 1L;
 
-        when(categoryRepository.existsById(categoryId)).thenReturn(true);
+        when(categoryRepository.existsById(1L)).thenReturn(true);
 
-        categoryService.deleteById(categoryId);
+        categoryService.deleteById(1L);
 
-        verify(categoryRepository).existsById(categoryId);
-        verify(categoryRepository).deleteById(categoryId);
+        verify(categoryRepository).existsById(1L);
+        verify(categoryRepository,times(1)).deleteById(1L);
     }
 
     private List<Category> getDefaultCategories() {
