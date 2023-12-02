@@ -194,7 +194,6 @@ public class BookControllerTest {
                         .getContentAsString(), BookDto.class);
         assertEquals("Updated Title", actualDtoList.getTitle());
         assertEquals("Updated Author", actualDtoList.getAuthor());
-
     }
 
     @Test
