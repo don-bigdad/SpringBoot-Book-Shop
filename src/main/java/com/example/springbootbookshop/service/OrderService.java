@@ -6,6 +6,7 @@ import com.example.springbootbookshop.dto.order.OrderItemDto;
 import com.example.springbootbookshop.dto.order.RequestOrderDto;
 import com.example.springbootbookshop.dto.order.UpdateRequestOrderStatus;
 import java.util.Set;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
     CartDto save(Long userId, RequestOrderDto requestOrderDto);
@@ -14,7 +15,7 @@ public interface OrderService {
 
     Set<OrderItemDto> getOrder(Long userId, Long orderId);
 
-    Set<OrderDto> getAllOrders(Long userId);
+    Set<OrderDto> getAllOrders(Long userId, Pageable pageable);
 
     void updateOrderStatus(Long orderId, UpdateRequestOrderStatus status);
 }

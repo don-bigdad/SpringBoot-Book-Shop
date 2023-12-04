@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -50,8 +52,10 @@ public class OrderController {
     @GetMapping
     @Operation(summary = "Get order history")
     @PreAuthorize("hasRole('USER')")
-    public Set<OrderDto> getOrderHistory(Authentication authentication) {
-        return orderService.getAllOrders(((User) authentication.getPrincipal()).getId());
+    public Set<OrderDto> getOrderHistory(Authentication authentication,
+                                         @PageableDefault(size = 5, page = 0)
+                                         Pageable pageable) {
+        return orderService.getAllOrders(((User) authentication.getPrincipal()).getId(), pageable);
     }
 
     @GetMapping("/{orderId}/items/{itemId}")
