@@ -44,15 +44,13 @@ public class CartServiceImpl implements CartService {
         Book book = bookRepository.findById(requestCartItemDto.bookId()).orElseThrow(
                 () -> new EntityNotFoundException("Book with id: " + requestCartItemDto.bookId()
                         + "doesn`t exist"));
-        int quantityToAdd = requestCartItemDto.quantity();
         CartItem cartItem = cartItemsRepository.findByCartAndBook(cart, book)
-                .orElseGet(() -> {
-                    CartItem newCartItem = cartItemMapper.toEntity(requestCartItemDto);
-                    newCartItem.setBook(book);
-                    newCartItem.setCart(cart);
-                    return newCartItem;
-                });
-        cartItem.setQuantity(quantityToAdd + cartItem.getQuantity());
+                .orElse(null);
+        cartItem = (cartItem == null) ? cartItemMapper.toEntity(requestCartItemDto) : cartItem;
+        cartItem.setBook(book);
+        cartItem.setCart(cart);
+        cartItem.setQuantity(cartItem.getQuantity()
+                + ((cartItem.getId() == null) ? 0 : requestCartItemDto.quantity()));
         return cartItemMapper.toDto(cartItemsRepository.save(cartItem));
     }
 
@@ -62,7 +60,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.getCartByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Shopping cart not found for user with id: " + userId));
-        CartItem cartItem = cartItemsRepository.getCartItemsByIdAndCartId(itemId,
+        cartItemsRepository.getCartItemsByIdAndCartId(itemId,
                         cart.getId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Cart item not found in the user's shopping cart"));

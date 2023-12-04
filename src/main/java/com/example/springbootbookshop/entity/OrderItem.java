@@ -9,15 +9,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Data
-@Table(name = "cart_items")
-public class CartItem {
+@Table(name = "order_items")
+@SQLDelete(sql = "UPDATE orders_items SET is_deleted = TRUE WHERE id = ?")
+@Where(clause = "is_deleted = false")
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,14 +29,21 @@ public class CartItem {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @JoinColumn(name = "cart_id", nullable = false)
-    private Cart cart;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     @Column(nullable = false)
-    @NotNull
     private Integer quantity;
+
+    @Column(nullable = false)
+    private BigDecimal price;
+
+    @Column(nullable = false)
+    private boolean isDeleted = false;
 }

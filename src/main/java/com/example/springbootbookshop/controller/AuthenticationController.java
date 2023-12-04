@@ -25,7 +25,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/register")
-    @Operation(summary = "Login user into system")
+    @Operation(summary = "Register user into system")
     public UserResponseDto register(@RequestBody @Valid
                                 UserRegistrationRequestDto requestDto)
             throws RegistrationException {
@@ -33,7 +33,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/login")
-    @Operation(summary = "Register new user to DB")
+    @Operation(summary = "Login new user to DB")
     public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto requestDto) {
         return authenticationService.authenticateUser(requestDto);
     }

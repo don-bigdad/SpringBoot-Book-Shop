@@ -37,7 +37,7 @@ public class CartController {
     @Operation(summary = "Get cart by user id from DB")
     @PreAuthorize("hasRole('USER')")
     public CartDto getUserCart(Authentication authentication) {
-        return cartService.findById(getUserId(authentication));
+        return cartService.findById(((User) authentication.getPrincipal()).getId());
     }
 
     @PostMapping
@@ -45,7 +45,7 @@ public class CartController {
     @PreAuthorize("hasRole('USER')")
     public CartItemDto addItemToCart(Authentication authentication,
                                      @Valid @RequestBody RequestCartItemDto cartItem) {
-        return cartService.addItemToCart(getUserId(authentication), cartItem);
+        return cartService.addItemToCart(((User) authentication.getPrincipal()).getId(), cartItem);
     }
 
     @DeleteMapping("cart-items/{id}")
@@ -54,7 +54,7 @@ public class CartController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeCartItem(Authentication authentication,
                                @PathVariable @Positive Long id) {
-        cartService.removeItem(getUserId(authentication), id);
+        cartService.removeItem(((User) authentication.getPrincipal()).getId(), id);
     }
 
     @PutMapping("cart-items/{id}")
@@ -64,10 +64,5 @@ public class CartController {
     public CartItemDto updateItemQuantity(@PathVariable @Positive Long id,
                                           @RequestBody @Valid UpdateRequestCartItemDto quantity) {
         return cartService.updateCartItem(id, quantity);
-    }
-
-    private Long getUserId(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return user.getId();
     }
 }
