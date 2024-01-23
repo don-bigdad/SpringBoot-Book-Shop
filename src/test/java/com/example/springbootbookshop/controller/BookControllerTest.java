@@ -135,8 +135,8 @@ public class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<BookDto> actualDtoList = objectMapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<>() {});
+        List<BookDto> actualDtoList = objectMapper.readValue(result.getResponse()
+                        .getContentAsString(), new TypeReference<>() {});
         assertNotNull(actualDtoList);
         for (int i = 0; i < actualDtoList.size() - 1; i++) {
             EqualsBuilder.reflectionEquals(expectBookDtoList.get(i),
@@ -175,8 +175,8 @@ public class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<BookDto> actualDtoList = objectMapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<>() {});
+        List<BookDto> actualDtoList = objectMapper.readValue(result.getResponse()
+                        .getContentAsString(), new TypeReference<>() {});
         assertEquals(2, actualDtoList.size());
     }
 
