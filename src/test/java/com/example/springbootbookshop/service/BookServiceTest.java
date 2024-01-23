@@ -146,7 +146,6 @@ public class BookServiceTest {
                 "New Description",
                 "New image url",
                 List.of(1L));
-
     }
 
     private Set<Category> getDefaultCategories() {

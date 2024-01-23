@@ -13,6 +13,7 @@ import com.example.springbootbookshop.dto.book.BookDto;
 import com.example.springbootbookshop.dto.book.BookDtoWithoutCategoryIds;
 import com.example.springbootbookshop.dto.category.CategoryDto;
 import com.example.springbootbookshop.dto.category.CategoryRequestDto;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -85,7 +86,6 @@ public class CategoryControllerTest {
         CategoryRequestDto categoryRequestDto = new CategoryRequestDto(
                 "Literature",
                 "Category with different stories");
-        CategoryDto expectedDto = getExpectDto();
         String jsonRequest = objectMapper.writeValueAsString(categoryRequestDto);
 
         MvcResult result = mockMvc.perform(post("/category")
@@ -97,7 +97,7 @@ public class CategoryControllerTest {
         BookDto actualDto = objectMapper.readValue(result.getResponse().getContentAsString(),
                 BookDto.class);
         assertNotNull(actualDto);
-        EqualsBuilder.reflectionEquals(expectedDto, actualDto,"id");
+        EqualsBuilder.reflectionEquals(categoryRequestDto, actualDto,"id");
     }
 
     @Test
@@ -111,12 +111,12 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        CategoryDto[] actualDtoList = objectMapper.readValue(result.getResponse()
-                        .getContentAsString(), CategoryDto[].class);
+        List<CategoryDto> actualDtoList = objectMapper.readValue(result.getResponse()
+                        .getContentAsString(), new TypeReference<>() {});
         assertNotNull(actualDtoList);
-        for (int i = 0; i < actualDtoList.length - 1; i++) {
+        for (int i = 0; i < actualDtoList.size() - 1; i++) {
             EqualsBuilder.reflectionEquals(expectedCategoryDtoList.get(i),
-                    actualDtoList[i], "id");
+                    actualDtoList.get(i), "id");
         }
     }
 
@@ -181,8 +181,8 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("Get all books by category id")
-    @Sql(scripts = {"classpath:database/books-categories/insert-books-categories.sql",
-            "classpath:database/books/insert-books.sql"},
+    @Sql(scripts = {"classpath:database/books/insert-new-books.sql",
+            "classpath:database/books-categories/insert-books-categories.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/books-categories/clear-book-category.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -192,11 +192,10 @@ public class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
-        BookDtoWithoutCategoryIds[] bookDtoWithoutCategoryIds = objectMapper.readValue(
-                result.getResponse().getContentAsString(),
-                BookDtoWithoutCategoryIds[].class);
-        assertEquals(1, bookDtoWithoutCategoryIds.length);
-        assertEquals("Book 2", bookDtoWithoutCategoryIds[0].title());
+        List<BookDtoWithoutCategoryIds> bookDtoWithoutCategoryIds = objectMapper.readValue(
+                result.getResponse().getContentAsString(), new TypeReference<>() {});
+        assertEquals(2, bookDtoWithoutCategoryIds.size());
+        assertEquals("Book 5", bookDtoWithoutCategoryIds.get(1).title());
     }
 
     private CategoryDto getExpectDto() {
