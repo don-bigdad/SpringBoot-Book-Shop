@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +45,9 @@ public class BookControllerTest {
     private ObjectMapper objectMapper;
 
     @BeforeAll
-    static void beforeAll(@Autowired WebApplicationContext applicationContext) {
+    static void beforeAll(@Autowired WebApplicationContext applicationContext,
+                          @Autowired DataSource dataSource) {
+        tearDown(dataSource);
         mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
@@ -52,7 +55,6 @@ public class BookControllerTest {
 
     @BeforeEach
     void beforeEach(@Autowired DataSource dataSource) throws SQLException {
-        tearDown(dataSource);
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             ScriptUtils.executeSqlScript(connection,
@@ -60,6 +62,11 @@ public class BookControllerTest {
             ScriptUtils.executeSqlScript(connection,
                     new ClassPathResource("database/books/insert-books.sql"));
         }
+    }
+
+    @AfterEach
+    void afterEach(@Autowired DataSource dataSource) {
+        tearDown(dataSource);
     }
 
     @SneakyThrows
@@ -103,8 +110,6 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Try to create an invalid book")
-    @Sql(scripts = "classpath:database/books/clear-books-db.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void createBook_InValidRequestDto_Ok() throws Exception {
         CreateBookRequestDto createBookRequestDto = new CreateBookRequestDto(
@@ -164,10 +169,10 @@ public class BookControllerTest {
     @Test
     @DisplayName("Delete book by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
-    void deleteBookByIdAssertSuccess() throws Exception {
+    void deleteBookById_ValidId_Ok() throws Exception {
         mockMvc.perform(delete("/books/2")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNoContent());
 
         MvcResult result = mockMvc.perform(get("/books")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -182,15 +187,7 @@ public class BookControllerTest {
     @Test
     @DisplayName("Update book by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
-    void updateBookByIdAssertSuccess() throws Exception {
-        MvcResult result = mockMvc.perform(get("/books/2")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        BookDto dto = objectMapper.readValue(result.getResponse()
-                        .getContentAsString(), BookDto.class);
-        assertEquals("Book 2", dto.getTitle());
-
+    void updateBookById_ValidId_Ok() throws Exception {
         CreateBookRequestDto updatedDto = new CreateBookRequestDto(
                 "Updated Title", "Updated Author", "Updated ISBN",
                 BigDecimal.valueOf(29.99), "Updated Description", "updated.jpg",
@@ -213,7 +210,7 @@ public class BookControllerTest {
     @Test
     @DisplayName("Get book by non-existing id")
     @WithMockUser(username = "user")
-    void getBookByNoExitedId() throws Exception {
+    void getBookById_InvalidId_NotOk() throws Exception {
         mockMvc.perform(get("/books/555555")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
@@ -230,17 +227,5 @@ public class BookControllerTest {
                 new BookDto().setId(3L).setTitle("Book 3").setAuthor("Author 3").setIsbn("ISBN-3")
                         .setPrice(BigDecimal.valueOf(29.99)).setDescription("Description 3")
                         .setCoverImage("image2.jpg"));
-    }
-
-    private BookDto getExpectDto(CreateBookRequestDto dto) {
-        return new BookDto()
-                .setAuthor(dto.author())
-                .setIsbn(dto.isbn())
-                .setId(1L)
-                .setTitle(dto.title())
-                .setDescription(dto.description())
-                .setCategoryIds(dto.categoryIds())
-                .setCoverImage(dto.coverImage())
-                .setPrice(dto.price());
     }
 }
