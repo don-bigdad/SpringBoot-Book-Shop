@@ -181,7 +181,8 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("Get all books by category id")
-    @Sql(scripts = {"classpath:database/books/insert-new-books.sql",
+    @Sql(scripts = {"classpath:database/books/clear-books-db.sql",
+            "classpath:database/books/insert-new-books.sql",
             "classpath:database/books-categories/insert-books-categories.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/books-categories/clear-book-category.sql",
@@ -194,8 +195,8 @@ public class CategoryControllerTest {
                 .andReturn();
         List<BookDtoWithoutCategoryIds> bookDtoWithoutCategoryIds = objectMapper.readValue(
                 result.getResponse().getContentAsString(), new TypeReference<>() {});
-        assertEquals(2, bookDtoWithoutCategoryIds.size());
-        assertEquals("Book 5", bookDtoWithoutCategoryIds.get(1).title());
+        assertEquals(1, bookDtoWithoutCategoryIds.size());
+        assertEquals("Book 5", bookDtoWithoutCategoryIds.get(0).title());
     }
 
     private CategoryDto getExpectDto() {
