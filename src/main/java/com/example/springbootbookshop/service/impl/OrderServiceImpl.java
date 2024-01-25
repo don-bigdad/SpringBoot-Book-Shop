@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,8 +79,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Set<OrderDto> getAllOrders(Long userId) {
-        return orderRepository.findAllByUserId(userId).stream()
+    public Set<OrderDto> getAllOrders(Long userId, Pageable pageable) {
+        return orderRepository.findAllByUserId(userId, pageable).stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toSet());
     }
