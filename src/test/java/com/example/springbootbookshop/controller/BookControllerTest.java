@@ -170,7 +170,7 @@ public class BookControllerTest {
     void deleteBookByIdAssertSuccess() throws Exception {
         mockMvc.perform(delete("/books/2")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNoContent());
     }
 
     @Test
