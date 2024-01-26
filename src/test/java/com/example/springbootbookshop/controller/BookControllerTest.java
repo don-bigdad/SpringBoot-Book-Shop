@@ -62,6 +62,11 @@ public class BookControllerTest {
         }
     }
 
+    @AfterEach
+    void afterEach(@Autowired DataSource dataSource) {
+        tearDown(dataSource);
+    }
+
     @SneakyThrows
     static void tearDown(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
@@ -71,11 +76,6 @@ public class BookControllerTest {
             ScriptUtils.executeSqlScript(connection,
                     new ClassPathResource("database/books/clear-books-db.sql"));
         }
-    }
-
-    @AfterEach
-    void afterEach(@Autowired DataSource dataSource) {
-        tearDown(dataSource);
     }
 
     @Test
@@ -108,8 +108,6 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Try to create an invalid book")
-    @Sql(scripts = "classpath:database/books/clear-books-db.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void createBook_InValidRequestDto_Ok() throws Exception {
         CreateBookRequestDto createBookRequestDto = new CreateBookRequestDto(
@@ -169,7 +167,7 @@ public class BookControllerTest {
     @Test
     @DisplayName("Delete book by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
-    void deleteBookById_ValidId_Ok() throws Exception {
+    void deleteBookByIdAssertSuccess() throws Exception {
         mockMvc.perform(delete("/books/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

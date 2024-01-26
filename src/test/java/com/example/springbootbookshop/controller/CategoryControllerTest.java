@@ -77,7 +77,7 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Create a new category")
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    void createNewCategory_Ok() throws Exception {
+    void createNewCategory_ValidCategory_Ok() throws Exception {
         CategoryRequestDto categoryRequestDto = new CategoryRequestDto(
                 "Literature",
                 "Category with different stories");
@@ -98,7 +98,7 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Get all categories")
     @WithMockUser(username = "user")
-    void getAllCategories_Ok() throws Exception {
+    void getAllCategories_ValidRequest_Ok() throws Exception {
         List<CategoryDto> expectedCategoryDtoList = getCategoriesList();
 
         MvcResult result = mockMvc.perform(get("/category")
@@ -137,7 +137,7 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Update category by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
-    void updateBookByIdA_ValidId_Ok() throws Exception {
+    void updateBookById_ValidId_Ok() throws Exception {
         MvcResult result = mockMvc.perform(get("/category/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
