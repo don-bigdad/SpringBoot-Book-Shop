@@ -59,9 +59,13 @@ public class BookServiceTest {
     @DisplayName("Save book")
     void saveBook() {
         CreateBookRequestDto dto = getCreateRequestBookDto();
-        bookService.save(dto);
-        bookService.save(dto);
-        verify(bookRepository, times(2)).save(any());
+        Book book = bookMapper.toBook(dto);
+
+        when(bookRepository.save(any())).thenReturn(book);
+        BookDto savedDto = bookService.save(dto);
+
+        verify(bookRepository, times(1)).save(any());
+        assertEquals(savedDto.getPrice(), BigDecimal.valueOf(200));
     }
 
     @Test

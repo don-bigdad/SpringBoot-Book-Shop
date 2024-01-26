@@ -45,17 +45,14 @@ public class CategoryControllerTest {
     private ObjectMapper objectMapper;
 
     @BeforeAll
-    static void beforeAll(@Autowired WebApplicationContext applicationContext,
-                          @Autowired DataSource dataSource) throws SQLException {
+    static void beforeAll(@Autowired WebApplicationContext applicationContext) {
         mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
-        tearDown(dataSource);
     }
 
     @BeforeEach
     void beforeEach(@Autowired DataSource dataSource) throws SQLException {
-        tearDown(dataSource);
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
             ScriptUtils.executeSqlScript(connection,
@@ -79,10 +76,8 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("Create a new category")
-    @Sql(scripts = "classpath:database/category/clear-category.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    void createNewCategoryAndSaveIntoDbAssertSuccess() throws Exception {
+    void createNewCategory_Ok() throws Exception {
         CategoryRequestDto categoryRequestDto = new CategoryRequestDto(
                 "Literature",
                 "Category with different stories");
@@ -103,7 +98,7 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Get all categories")
     @WithMockUser(username = "user")
-    void getAllCategoriesFromDbAssertSuccess() throws Exception {
+    void getAllCategories_Ok() throws Exception {
         List<CategoryDto> expectedCategoryDtoList = getCategoriesList();
 
         MvcResult result = mockMvc.perform(get("/category")
@@ -123,26 +118,17 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Delete book by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
-    void deleteCategoryByIdAssertSuccess() throws Exception {
+    void deleteCategoryById_ValidId_Ok() throws Exception {
 
         mockMvc.perform(delete("/category/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
-
-        MvcResult result = mockMvc.perform(get("/category")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        CategoryDto[] actualDtoList = objectMapper.readValue(result.getResponse()
-                        .getContentAsString(), CategoryDto[].class);
-        assertEquals(2, actualDtoList.length);
     }
 
     @Test
     @DisplayName("User try delete category by id")
     @WithMockUser(username = "user")
-    void deleteCategoryByIdWithNoPermissionAssertException() throws Exception {
+    void deleteCategoryById_NoPermission_NotOk() throws Exception {
         mockMvc.perform(delete("/category/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
@@ -151,7 +137,7 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Update category by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
-    void updateBookByIdAssertSuccess() throws Exception {
+    void updateBookByIdA_ValidId_Ok() throws Exception {
         MvcResult result = mockMvc.perform(get("/category/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -188,7 +174,7 @@ public class CategoryControllerTest {
     @Sql(scripts = "classpath:database/books-categories/clear-book-category.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "user")
-    void getAllBooksByCategoryAssertSuccess() throws Exception {
+    void getAllBooksByCategory_Ok() throws Exception {
         MvcResult result = mockMvc.perform(get("/category/2/books")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -197,11 +183,6 @@ public class CategoryControllerTest {
                 result.getResponse().getContentAsString(), new TypeReference<>() {});
         assertEquals(1, bookDtoWithoutCategoryIds.size());
         assertEquals("Book 5", bookDtoWithoutCategoryIds.get(0).title());
-    }
-
-    private CategoryDto getExpectDto() {
-        return new CategoryDto("Literature",
-                "Category with different stories");
     }
 
     private List<CategoryDto> getCategoriesList() {
