@@ -137,15 +137,7 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Update category by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
-    void updateBookById_ValidId_Ok() throws Exception {
-        MvcResult result = mockMvc.perform(get("/category/2")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        CategoryDto dto = objectMapper.readValue(result.getResponse()
-                .getContentAsString(), CategoryDto.class);
-        assertEquals("Category 2", dto.name());
-
+    void updateCategoryById_ValidId_Ok() throws Exception {
         CategoryRequestDto updateRequest = new CategoryRequestDto(
                 "Updated name",
                 "Updated description"

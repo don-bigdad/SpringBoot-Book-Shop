@@ -30,7 +30,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -80,8 +79,6 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Create a new book")
-    @Sql(scripts = "classpath:database/books/clear-books-db.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void createBook_ValidRequestDto_Ok() throws Exception {
         CreateBookRequestDto createBookRequestDto = new CreateBookRequestDto(
