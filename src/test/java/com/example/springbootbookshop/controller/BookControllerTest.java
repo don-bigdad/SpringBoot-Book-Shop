@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.springbootbookshop.dto.book.BookDto;
 import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
+import com.example.springbootbookshop.entity.Book;
+import com.example.springbootbookshop.repository.BookRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -42,6 +44,8 @@ public class BookControllerTest {
     protected static MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private BookRepository bookRepository;
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -174,13 +178,9 @@ public class BookControllerTest {
     @DisplayName("Update book by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
     void updateBookById_ValidId_Ok() throws Exception {
-        MvcResult result = mockMvc.perform(get("/books/2")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        BookDto dto = objectMapper.readValue(result.getResponse()
-                        .getContentAsString(), BookDto.class);
-        assertEquals("Book 2", dto.getTitle());
+        Book bookFromDB = bookRepository.findById(2L).get();
+        assertNotNull(bookFromDB);
+        assertEquals("Book 2", bookFromDB.getTitle());
 
         CreateBookRequestDto updatedDto = new CreateBookRequestDto(
                 "Updated Title", "Updated Author", "Updated ISBN",
