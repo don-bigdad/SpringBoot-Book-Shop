@@ -62,7 +62,6 @@ public class BookServiceTest {
         Book book = bookMapper.toBook(dto);
 
         when(bookRepository.save(any())).thenReturn(book);
-
         BookDto savedDto = bookService.save(dto);
 
         verify(bookRepository, times(1)).save(any());

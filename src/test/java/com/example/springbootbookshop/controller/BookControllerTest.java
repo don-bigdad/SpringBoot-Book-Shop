@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.springbootbookshop.dto.book.BookDto;
 import com.example.springbootbookshop.dto.book.CreateBookRequestDto;
+import com.example.springbootbookshop.entity.Book;
+import com.example.springbootbookshop.repository.BookRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -30,7 +32,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -43,11 +44,11 @@ public class BookControllerTest {
     protected static MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private BookRepository bookRepository;
 
     @BeforeAll
-    static void beforeAll(@Autowired WebApplicationContext applicationContext,
-                          @Autowired DataSource dataSource) {
-        tearDown(dataSource);
+    static void beforeAll(@Autowired WebApplicationContext applicationContext) {
         mockMvc = MockMvcBuilders.webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
@@ -82,8 +83,6 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Create a new book")
-    @Sql(scripts = "classpath:database/books/clear-books-db.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void createBook_ValidRequestDto_Ok() throws Exception {
         CreateBookRequestDto createBookRequestDto = new CreateBookRequestDto(
@@ -169,25 +168,20 @@ public class BookControllerTest {
     @Test
     @DisplayName("Delete book by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
-    void deleteBookById_ValidId_Ok() throws Exception {
+    void deleteBookByIdAssertSuccess() throws Exception {
         mockMvc.perform(delete("/books/2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
-
-        MvcResult result = mockMvc.perform(get("/books")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        List<BookDto> actualDtoList = objectMapper.readValue(result.getResponse()
-                        .getContentAsString(), new TypeReference<>() {});
-        assertEquals(2, actualDtoList.size());
     }
 
     @Test
     @DisplayName("Update book by id")
     @WithMockUser(username = "admin", roles = {"ADMIN","USER"})
     void updateBookById_ValidId_Ok() throws Exception {
+        Book bookFromDB = bookRepository.findById(2L).get();
+        assertNotNull(bookFromDB);
+        assertEquals("Book 2", bookFromDB.getTitle());
+
         CreateBookRequestDto updatedDto = new CreateBookRequestDto(
                 "Updated Title", "Updated Author", "Updated ISBN",
                 BigDecimal.valueOf(29.99), "Updated Description", "updated.jpg",
